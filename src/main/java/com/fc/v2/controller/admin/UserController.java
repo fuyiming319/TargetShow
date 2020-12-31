@@ -1,12 +1,10 @@
 package com.fc.v2.controller.admin;
 
 import java.util.List;
-
 import com.fc.v2.common.domain.ResultTable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import com.fc.v2.common.base.BaseController;
@@ -23,7 +21,6 @@ import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysDepartmentService;
 import com.fc.v2.service.SysPositionService;
 import com.github.pagehelper.PageInfo;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

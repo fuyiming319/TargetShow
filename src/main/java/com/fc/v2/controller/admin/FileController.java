@@ -1,9 +1,5 @@
 package com.fc.v2.controller.admin;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.fc.v2.common.conf.oss.OssTemplate;
 import com.fc.v2.model.auto.SysFile;
 import io.swagger.annotations.Api;
@@ -13,12 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import com.fc.v2.common.base.BaseController;
-import com.fc.v2.common.domain.AjaxResult;
-import com.fc.v2.common.file.FileUtils;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.util.StringUtils;
 import com.github.pagehelper.PageInfo;
 
 /**

@@ -3,8 +3,7 @@ package com.fc.v2.shiro.service;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.util.StringUtils;
-
+import cn.hutool.core.util.StrUtil;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.Serializable;
@@ -51,7 +50,7 @@ public class ShiroSession extends DefaultWebSessionManager {
 		// 获取请求头中的 AUTH_TOKEN 的值，如果请求头中有 AUTH_TOKEN 则其值为sessionId。shiro就是通过sessionId
 		// 来控制的
 		String sessionId = WebUtils.toHttp(request).getHeader(AUTH_TOKEN);
-		if (StringUtils.isEmpty(sessionId)) {
+		if (StrUtil.isEmpty(sessionId)) {
 			// 如果没有携带id参数则按照父类的方式在cookie进行获取sessionId
 			return super.getSessionId(request, response);
 

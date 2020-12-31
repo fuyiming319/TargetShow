@@ -5,8 +5,6 @@ import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.SysDepartment;
 import com.fc.v2.model.auto.SysDepartmentExample;
-import com.fc.v2.model.auto.SysPosition;
-import com.fc.v2.model.auto.TsysPermission;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysDepartmentService;
 import com.fc.v2.common.domain.ResuTree;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Api(value = "部门表")

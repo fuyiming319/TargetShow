@@ -5,7 +5,6 @@ import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.TsysPermission;
-import com.fc.v2.model.auto.TsysRole;
 import com.fc.v2.model.custom.Tablepar;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

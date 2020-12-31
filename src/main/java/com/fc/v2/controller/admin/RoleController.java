@@ -5,19 +5,13 @@ import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.TsysRole;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.shiro.util.ShiroUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
 
 /**
  * 角色Controller
@@ -44,8 +38,7 @@ public class RoleController extends BaseController{
 	@GetMapping("/view")
 	@RequiresPermissions("system:role:view")
     public String view(ModelMap model)
-    {	
-		String str="角色";
+    {
 		return prefix + "/list";
     }
 	
