@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="include :: header('403')"/>
-    <link href="../../static/ admin/css/other/error.css" rel="stylesheet"/>
+    <link th:href="@{/static/admin/css/other/error.css}" rel="stylesheet"/>
 </head>
 <body>
 <div class="content">
-    <img src="../../static/admin/images/403.svg" alt="">
+    <img th:src="@{/static/admin/images/403.svg}" alt="">
     <div class="content-r">
         <h1>403</h1>
         <p>抱歉，你无权访问该页面</p>
