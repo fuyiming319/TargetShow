@@ -113,7 +113,7 @@ public class AdminController extends BaseController {
 		// 获取session中的验证码
 		String verCode = (String) request.getSession().getAttribute("captcha");
 		 // 判断验证码
-		if (verCode!=null && verCode.equals(verCode.trim().toLowerCase())) {
+		if (captcha!=null && captcha.equals(verCode.trim().toLowerCase())) {
 			//清除验证码
 			CaptchaUtil.clear(request);  // 清除session中的验证码
 			yz=true;
