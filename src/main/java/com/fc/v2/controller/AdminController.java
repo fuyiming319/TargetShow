@@ -110,18 +110,15 @@ public class AdminController extends BaseController {
 			HttpServletRequest request) {
 		// ModelAndView view =new ModelAndView();
 		Boolean yz = false;
-		if (V2Config.getRollVerification()) {// 滚动验证
-			yz = true;
-		} else {// 图片验证
-			// 获取session中的验证码
-			String verCode = (String) request.getSession().getAttribute("captcha");
-			 // 判断验证码
-			if (verCode!=null && verCode.equals(verCode.trim().toLowerCase())) {
-				//清除验证码
-				CaptchaUtil.clear(request);  // 清除session中的验证码
-				yz=true;
-			}
+		// 获取session中的验证码
+		String verCode = (String) request.getSession().getAttribute("captcha");
+		 // 判断验证码
+		if (verCode!=null && verCode.equals(verCode.trim().toLowerCase())) {
+			//清除验证码
+			CaptchaUtil.clear(request);  // 清除session中的验证码
+			yz=true;
 		}
+		
 		// 判断验证码
 		if (yz) {
 			String userName = user.getUsername();
