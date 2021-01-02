@@ -78,6 +78,7 @@
         let dtree = layui.dtree;
         let MODULE_PATH = rootPath+"/UserController";
         let DEPAR_PATH=rootPath+"/SysDepartmentController";
+        let username='[[${TsysUser.username}]]';
           //部门树
         dtree.renderSelect({
             elem: "#selectParent",
@@ -97,20 +98,23 @@
                 if(value.length < 2){
                     return '标题至少得2个字符啊';
                 }
-                var msg = "";
-                $.ajax({
-                    url: MODULE_PATH+'/checkLoginNameUnique',
-                    data: "username="+value,
-                    dataType: 'json',
-                    type: 'post',
-                    async:false,
-                    success: function (result) {
-                            msg=result;
-                    }
-                });
-                if (msg == 1) {
-                   return "已有相同数据";
+                if(username!=value){
+                	 var msg = "";
+                     $.ajax({
+                         url: MODULE_PATH+'/checkLoginNameUnique',
+                         data: "username="+value,
+                         dataType: 'json',
+                         type: 'post',
+                         async:false,
+                         success: function (result) {
+                                 msg=result;
+                         }
+                     });
+                     if (msg == 1) {
+                        return "已有相同数据";
+                     }
                 }
+               
 
             }
         });
