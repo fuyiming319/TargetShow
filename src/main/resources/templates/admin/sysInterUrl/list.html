@@ -63,6 +63,10 @@
     <span class="layui-badge layui-bg-orange">GET</span>
     {{# }else if(d.type == '2'){ }}
     <span class="layui-badge layui-bg-blue">POST</span>
+ 	{{# }else if(d.type == '3'){ }}
+    <span class="layui-badge layui-bg-blue">DELETE</span>
+ 	{{# }else if(d.type == '4'){ }}
+    <span class="layui-badge layui-bg-blue">PUT</span>
     {{# } }}
 </script>
 
@@ -163,6 +167,7 @@
                         layer.close(loading);
                         if (result.code==200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            	 table.reload('sysInterUrl-table');
                             });
                         } else {
                             layer.msg(result.msg, {icon: 2, time: 1000});
