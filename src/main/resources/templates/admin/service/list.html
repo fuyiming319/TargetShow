@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="include :: header('首页')"/>
-    <link rel="stylesheet" href="/static/admin/css/other/console1.css"/>
+    <link rel="stylesheet" th:href="@{/static/admin/css/other/console1.css}"/>
 </head>
 <body class="pear-container">
 <div>
@@ -166,7 +166,7 @@
                         <dd th:each="list : ${sysOperLog} ">
                             <div class="layui-status-img">
                                 <a href="javascript:;">
-                                    <img style="width: 32px;height: 32px;border-radius: 50px;" src="/static/admin/images/avatar.jpg">
+                                    <img style="width: 32px;height: 32px;border-radius: 50px;" th:src="@{/static/admin/images/avatar.jpg}">
                                 </a>
                             </div>
                             <div>
