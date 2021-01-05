@@ -132,7 +132,7 @@ public class MyInterceptor  implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		//设置前端的全局 地址，如果前端网页错乱请修改这儿
 		request.setAttribute("rootPath", request.getContextPath());
-		System.out.println(request.getContextPath());
+		//System.out.println(request.getContextPath());
 		//yml里面得演示模式true 为开启 就会拉取数据拦截表进行判断符合得就拦截
 		if(V2Config.getDemoEnabled().equals("true")) {
 			Boolean b = ifurl(request, response);

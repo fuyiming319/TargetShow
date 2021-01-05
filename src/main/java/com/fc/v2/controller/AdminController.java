@@ -2,6 +2,7 @@ package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.conf.V2Config;
+import com.fc.v2.common.conf.redis.RedisService;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysNotice;
 import com.fc.v2.model.auto.TsysUser;
@@ -16,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

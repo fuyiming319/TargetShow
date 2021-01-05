@@ -12,7 +12,7 @@
     <artifactId>v2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>v2</name>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
     <description>springboot-v2-pear</description>
 
     <properties>
@@ -25,6 +25,16 @@
 
     <!-- https://mvnrepository.com/ 查找jar网站 -->
 	<dependencies>
+	
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.commons</groupId>
+		  <artifactId>commons-pool2</artifactId>
+		</dependency>
+		
 		<!-- SpringBoot Web容器 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,6 +68,12 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+		<!-- JSON 解 析 工 具 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
 		<!-- pageHelper -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
