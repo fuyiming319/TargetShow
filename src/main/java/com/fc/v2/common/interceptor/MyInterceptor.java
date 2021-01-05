@@ -24,8 +24,6 @@ public class MyInterceptor  implements HandlerInterceptor {
 	/*************演示模式需要 start*************/
 	/**需要被拦截的post请求url**/
 	public static List<SysInterUrl> posturllist=new ArrayList<SysInterUrl>();
-	/**需要被拦截的get请求url**/
-	public static List<SysInterUrl> geturllist=new ArrayList<SysInterUrl>();
 	/**注入拦截器表的service**/
 	public static  SysInterUrlService interUrlService= SpringUtils.getBean(SysInterUrlService.class);
 	/**
@@ -35,12 +33,8 @@ public class MyInterceptor  implements HandlerInterceptor {
 	static {
 		//post
 		SysInterUrlExample example_post= new SysInterUrlExample();
-		example_post.createCriteria().andTypeEqualTo(2);
 		posturllist=interUrlService.selectByExample(example_post);
-		//get
-		SysInterUrlExample example_get= new SysInterUrlExample();
-		example_get.createCriteria().andTypeEqualTo(1);
-		geturllist= interUrlService.selectByExample(example_get);
+		
 //		//用户POST请求
 //		posturllist.add("/UserController/add");
 //		posturllist.add("/UserController/remove");
@@ -152,24 +146,13 @@ public class MyInterceptor  implements HandlerInterceptor {
 	 * @Date 2019年11月11日 下午5:17:30
 	 */
 	public Boolean ifurl(HttpServletRequest request, HttpServletResponse response) {
-	
 		//当前请求
 		String requesturl=request.getRequestURI();
-		if(request.getMethod().equals("POST")) {
-			
-			for (SysInterUrl sysInterUrl : posturllist) {
-				if(StrUtil.containsAnyIgnoreCase(requesturl, sysInterUrl.getUrl())) {
-					return true;
-				}
-			}
-		}else {
-			for (SysInterUrl sysInterUrl : geturllist) {
-				if(StrUtil.containsAnyIgnoreCase(requesturl, sysInterUrl.getUrl())) {
-					return true;
-				}
+		for (SysInterUrl sysInterUrl : posturllist) {
+			if(StrUtil.containsAnyIgnoreCase(requesturl, sysInterUrl.getUrl())) {
+				return true;
 			}
 		}
-		
 		return false;
 	}
 }
