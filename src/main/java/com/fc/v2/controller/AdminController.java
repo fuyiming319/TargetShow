@@ -2,7 +2,6 @@ package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.conf.V2Config;
-import com.fc.v2.common.conf.redis.RedisService;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysNotice;
 import com.fc.v2.model.auto.TsysUser;
