@@ -1,6 +1,7 @@
 package com.fc.v2.controller.admin;
 
 import com.fc.v2.common.conf.oss.OssTemplate;
+import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -107,6 +108,27 @@ public class FileController extends BaseController{
         map.put("sysFile", sysFileService.selectByPrimaryKey(id));
         return prefix + "/edit";
     }
+	
+	
+	/**
+	 * 删除文件
+	 * @param ids
+	 * @return
+	 */
+	//@Log(title = "删除日志", action = "1")
+	@ApiOperation(value = "删除", notes = "删除")
+	@DeleteMapping("/remove")
+	@RequiresPermissions("system:file:remove")
+	@ResponseBody
+	public AjaxResult remove(String ids){
+		int b=sysFileService.deleteByPrimaryKey(ids);
+		if(b>0){
+			return success();
+		}else{
+			return error();
+		}
+	}
+	
 
 
     
