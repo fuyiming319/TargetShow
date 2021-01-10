@@ -92,10 +92,13 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 		//配置虚拟路径为项目得static下面
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
 		//添加swagger
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
-                "classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations(
-                "classpath:/META-INF/resources/webjars/");
+//        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
+//                "classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/webjars/**").addResourceLocations(
+//                "classpath:/META-INF/resources/webjars/");
+//        
+        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
         if(!"Y".equals(isstatic)) {
         	 //配置上传路径为D盘

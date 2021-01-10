@@ -1,6 +1,8 @@
 package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
+
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author fuce
  * @date 2019-10-21 00:15
  */
+@Api(tags = "首页模块")
 @Controller
 public class IndexController extends BaseController{
 	

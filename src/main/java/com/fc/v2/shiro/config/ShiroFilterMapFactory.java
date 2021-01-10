@@ -42,11 +42,8 @@ public class ShiroFilterMapFactory {
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/admin/login", "anon");
 		filterChainDefinitionMap.put("/admin/logout", "logout");
-		
 		//手机登录
 		filterChainDefinitionMap.put("/admin/API/login", "anon");
-				
-		
 		// 放验证码
 		filterChainDefinitionMap.put("/captcha/**", "anon");
 		// 释放 druid 监控画面
@@ -55,8 +52,8 @@ public class ShiroFilterMapFactory {
 		filterChainDefinitionMap.put("/websocket", "anon");
 		// 前端
 		filterChainDefinitionMap.put("/", "anon");
-		filterChainDefinitionMap.put("/index", "anon");// 任务调度暂时放开
-
+		filterChainDefinitionMap.put("/index", "anon");
+		// 任务调度暂时放开
 		filterChainDefinitionMap.put("/quartz/**", "anon");
 
 		// 开放APicontroller
