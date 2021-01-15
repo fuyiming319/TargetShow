@@ -9,7 +9,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -34,8 +33,7 @@ public class GeneratorService {
 	 public PageInfo<TsysTables> list(Tablepar tablepar,String searchText){
 		 	PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
 		 	List<TsysTables> list=  generatorMapper.queryList(searchText);
-		    PageInfo<TsysTables> pageInfo = new PageInfo<TsysTables>(list);  
-		    
+		    PageInfo<TsysTables> pageInfo = new PageInfo<TsysTables>(list);
 		    return pageInfo;
 	 }
 	 

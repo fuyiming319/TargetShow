@@ -58,7 +58,7 @@ spring :
   devtools:
     restart:
       #热部署开关
-      enabled: false
+      enabled: true
       #指定热部署的目录
       additional-paths: src/main/java
       #指定目录不更新
