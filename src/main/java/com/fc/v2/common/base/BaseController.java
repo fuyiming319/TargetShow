@@ -10,7 +10,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -148,7 +147,6 @@ public class BaseController
      * Return 表格分页数据
      * */
     protected  static ResultTable pageTable(Object data, long count){
-
         return ResultTable.pageTable(count,data);
     }
 
@@ -158,7 +156,6 @@ public class BaseController
      * Return 表格分页数据
      * */
     protected  static ResultTable dataTable(Object data){
-
         return ResultTable.dataTable(data);
     }
 
@@ -168,9 +165,10 @@ public class BaseController
      * Return 表格分页数据
      * */
     protected  static ResultTable treeTable(Object data){
-
         return ResultTable.dataTable(data);
     }
-
+    
+    
+    
    
 }

@@ -128,7 +128,7 @@ public class AutoCodeUtil {
 //        			}
         			
         		}else {
-        			String filepath=getCoverFileName(template,"a" ,tableInfo.getJavaTableName() ,autoCodeConfig.getConfigkey("parentPack"), "model","gen");
+        			String filepath=getCoverFileName(template,tableInfo.getJavaTableName_a() ,tableInfo.getJavaTableName() ,autoCodeConfig.getConfigkey("parentPack"), "model","gen");
     		        Template tpl = Velocity.getTemplate(template, "UTF-8" );
     				File file = new File(filepath);
     				if (!file.getParentFile().exists())

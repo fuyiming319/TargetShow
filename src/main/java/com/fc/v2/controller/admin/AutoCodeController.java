@@ -153,7 +153,7 @@ public class AutoCodeController extends BaseController {
 		List<BeanColumn> list = generatorService.queryColumns2(tableName);
 		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
 		
-		AutoCodeUtil.autoCodeOneModel(tableInfo, false, true, true, true);
+		AutoCodeUtil.autoCodeOneModel(tableInfo, true, true, true, true);
 		return AjaxResult.success();
 	}
 	

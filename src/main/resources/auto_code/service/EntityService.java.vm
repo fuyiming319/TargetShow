@@ -48,13 +48,13 @@ public class ${tableInfo.javaTableName}Service implements BaseService<${tableInf
 	 * @param pageSize
 	 * @return
 	 */
-	 public PageInfo<${tableInfo.javaTableName}> list(Tablepar tablepar,${tableInfo.javaTableName} record){
+	 public PageInfo<${tableInfo.javaTableName}> list(Tablepar tablepar,${tableInfo.javaTableName} ${tableInfo.javaTableName_a}){
 	        ${tableInfo.javaTableName}Example testExample=new ${tableInfo.javaTableName}Example();
 			//搜索
 			if(StrUtil.isNotEmpty(tablepar.getSearchText())) {//小窗体
 	        	testExample.createCriteria().andLikeQuery2(tablepar.getSearchText());
 	        }else {//大搜索
-	        	testExample.createCriteria().andLikeQuery(record);
+	        	testExample.createCriteria().andLikeQuery(${tableInfo.javaTableName_a});
 	        }
 			//表格排序
 			//if(StrUtil.isNotEmpty(tablepar.getOrderByColumn())) {
