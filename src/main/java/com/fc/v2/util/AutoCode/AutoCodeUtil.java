@@ -96,11 +96,14 @@ public class AutoCodeUtil {
         	templates.remove("auto_code/html/list.html.vm");
         	templates.remove("auto_code/html/add.html.vm");
         	templates.remove("auto_code/html/edit.html.vm");
-        } if (vController!=true) {
+        } 
+        if (vController!=true) {
         	templates.remove("auto_code/controller/EntityController.java.vm");
-		} if (vService!=true) {
+		} 
+        if (vService!=true) {
 			templates.remove("auto_code/service/EntityService.java.vm");
-		} if (vMapperORdao!=true) {
+		} 
+        if (vMapperORdao!=true) {
 			templates.remove("auto_code/model/Entity.java.vm");
 			templates.remove("auto_code/model/EntityExample.java.vm");
         	templates.remove("auto_code/mapperxml/EntityMapper.xml.vm");

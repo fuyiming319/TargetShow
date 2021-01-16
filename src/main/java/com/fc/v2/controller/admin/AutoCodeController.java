@@ -2,8 +2,6 @@ package com.fc.v2.controller.admin;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.fc.v2.common.base.BaseController;
@@ -12,21 +10,17 @@ import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.custom.TsysTables;
 import com.fc.v2.model.custom.TsysTablesVo;
-import com.fc.v2.model.custom.autocode.AutoCodeConfig;
 import com.fc.v2.model.custom.autocode.BeanColumn;
 import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.service.GeneratorService;
 import com.fc.v2.service.SysUtilService;
 import com.fc.v2.util.AutoCode.AutoCodeUtil;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -159,7 +153,7 @@ public class AutoCodeController extends BaseController {
 		List<BeanColumn> list = generatorService.queryColumns2(tableName);
 		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
 		
-		AutoCodeUtil.autoCodeOneModel(tableInfo, false, true, false, false);
+		AutoCodeUtil.autoCodeOneModel(tableInfo, false, true, true, true);
 		return AjaxResult.success();
 	}
 	

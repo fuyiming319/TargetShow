@@ -1,9 +1,7 @@
 package com.fc.v2.model.custom.autocode;
 
 import java.util.List;
-
 import org.apache.commons.lang.WordUtils;
-
 import com.fc.v2.util.StringUtils;
 
 public class TableInfo {

@@ -57,6 +57,11 @@ public class BeanColumn {
 	/**mapperxml需要类型 例如:jdbcType="VARCHAR" **/
 	private String jdbcType;
 	
+	/**java类型**/
+	private String javaType;
+	/**java 首字母大写**/
+	private String javaName;
+	
 	public BeanColumn() {
 		super();
 	}
@@ -229,6 +234,22 @@ public class BeanColumn {
 		this.collation_name = collation_name;
 	}
 
+	public String getJavaType() {
+		String beanType=this.getBeanType();
+		String returnStr="String";
+		if(beanType==null) {
+			return returnStr;
+		}else {
+			returnStr=beanType.substring(beanType.lastIndexOf(".")+1,beanType.length());
+		}
+		javaType=returnStr;
+		return javaType;
+	}
+
+	public void setJavaType(String javaType) {
+		this.javaType = javaType;
+	}
+
 	public String getBeanType() {
 		String type=this.getData_type();
 		String returnStr="java.lang.String";
@@ -313,9 +334,17 @@ public class BeanColumn {
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
 	}
+	public String getJavaName() {
+		javaName=StringUtils.firstUpperCase(getBeanName());
+		return javaName;
+	}
+
+	public void setJavaName(String javaName) {
+		this.javaName = javaName;
+	}
 
 	public String getJdbcType() {
-		String datetype=this.getData_type();
+		String datetype=getData_type();
 		String returnStr="VARCHAR";
 		if(datetype==null) {
 			return returnStr;
@@ -393,8 +422,7 @@ public class BeanColumn {
 			String column_name, String column_key, String numeric_precision, String privileges, String column_comment,
 			String numeric_scale, String column_type, String generation_expression, String ordinal_position,
 			String data_type, String column_default, String character_maximum_length, String character_octet_length,
-			String datetime_precision, String character_set_name, String collation_name, String beanType,
-			String beanName,String jdbcType
+			String datetime_precision, String character_set_name, String collation_name
 			) {
 		super();
 		this.table_catalog = table_catalog;
@@ -421,6 +449,8 @@ public class BeanColumn {
 		this.beanType = getBeanType();
 		this.beanName = getBeanName();
 		this.jdbcType=getJdbcType();
+		this.javaType=getJavaType();
+		this.javaName=getJavaName();
 	}
     
 	
