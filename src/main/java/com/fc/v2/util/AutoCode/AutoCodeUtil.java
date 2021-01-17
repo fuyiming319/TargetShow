@@ -21,6 +21,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import com.fc.v2.model.custom.autocode.AutoCodeConfig;
+import com.fc.v2.model.custom.autocode.AutoConfigModel;
 import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.fc.v2.util.StringUtils;
@@ -68,7 +69,7 @@ public class AutoCodeUtil {
 	 * @author fuce
 	 * @Date 2019年8月24日 下午11:44:54
 	 */
-	public static void autoCodeOneModel(TableInfo tableInfo,Boolean vhtml,Boolean vController,Boolean vService,Boolean vMapperORdao){
+	public static void autoCodeOneModel(TableInfo tableInfo,AutoConfigModel autoConfigModel){
 		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
 		//设置velocity资源加载器
         Properties prop = new Properties();
@@ -85,60 +86,31 @@ public class AutoCodeUtil {
         //class类路径
         map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
         //作者
-        map.put("author", autoCodeConfig.getConfigkey("author"));
+        map.put("author", autoConfigModel.getAuthor());
         //时间
         map.put("datetime",new DateTime());
-        
+        //sql需要的权限父级pid
+        map.put("pid",autoConfigModel.getPid());
         
         VelocityContext context = new VelocityContext(map);
         
         //获取模板列表
         List<String> templates = getTemplates();
-        if(vhtml!=true) {
-        	templates.remove("auto_code/html/list.html.vm");
-        	templates.remove("auto_code/html/add.html.vm");
-        	templates.remove("auto_code/html/edit.html.vm");
-        } 
-        if (vController!=true) {
-        	templates.remove("auto_code/controller/EntityController.java.vm");
-		} 
-        if (vService!=true) {
-			templates.remove("auto_code/service/EntityService.java.vm");
-		} 
-        if (vMapperORdao!=true) {
-			templates.remove("auto_code/model/Entity.java.vm");
-			templates.remove("auto_code/model/EntityExample.java.vm");
-        	templates.remove("auto_code/mapperxml/EntityMapper.xml.vm");
-        	templates.remove("auto_code/mapper/EntityMapper.java.vm");
-		}
-        
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-      
+		/*
+		 * if(vhtml!=true) { templates.remove("auto_code/html/list.html.vm");
+		 * templates.remove("auto_code/html/add.html.vm");
+		 * templates.remove("auto_code/html/edit.html.vm"); } if (vController!=true) {
+		 * templates.remove("auto_code/controller/EntityController.java.vm"); } if
+		 * (vService!=true) {
+		 * templates.remove("auto_code/service/EntityService.java.vm"); } if
+		 * (vMapperORdao!=true) { templates.remove("auto_code/model/Entity.java.vm");
+		 * templates.remove("auto_code/model/EntityExample.java.vm");
+		 * templates.remove("auto_code/mapperxml/EntityMapper.xml.vm");
+		 * templates.remove("auto_code/mapper/EntityMapper.java.vm"); }
+		 */
         for (String template : templates) {
         	try {
-        		if(template.contains("menu.sql.vm")) {
-//        			if(sqlcheck==1) {//执行sql
-//        				Template tpl = Velocity.getTemplate(template, "UTF-8" );
-//            			StringWriter sw = new StringWriter(); 
-//            			tpl.merge(context, sw);
-//            			System.out.println(sw);
-//            			executeSQL(sysUtilService, sw.toString());
-//        			}else {//只输出
-        				Template tpl = Velocity.getTemplate(template, "UTF-8" );
-            			StringWriter sw = new StringWriter(); 
-            			tpl.merge(context, sw);
-            			System.out.println("输出sql");
-            			System.out.println(sw);
-            			System.out.println("输出sql end");
-        			//}
-            			  zip.putNextEntry(new ZipEntry(template));
-            			  IOUtils.write(sw.toString(), zip, "UTF-8");
-                          IOUtils.closeQuietly(sw);
-                          zip.closeEntry();
-        			
-        		}else {
-        			String targetPath = "c://";
+        			String targetPath = autoConfigModel.getParentPath();
         			String filepath=getCoverFileName(template,tableInfo ,autoCodeConfig.getConfigkey("parentPack"),targetPath);
     		        Template tpl = Velocity.getTemplate(template, "UTF-8" );
     				File file = new File(filepath);
@@ -153,8 +125,6 @@ public class AutoCodeUtil {
 						sw.flush();
 						System.out.println("成功生成Java文件:" + filepath);
 					}
-        		}
-	        	
         	} catch (IOException e) {
                 try {
 					throw new Exception("渲染模板失败，表名：" +"c"+"\n"+e.getMessage());
@@ -189,7 +159,7 @@ public class AutoCodeUtil {
 	 * @author fuce
 	 * @Date 2021年1月17日 下午7:37:50
 	 */
-	public static void autoCodeOneModel(TableInfo tableInfo,ZipOutputStream zip){
+	public static void autoCodeOneModel(TableInfo tableInfo,AutoConfigModel autoConfigModel,ZipOutputStream zip){
 		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
 		//设置velocity资源加载器
         Properties prop = new Properties();
@@ -205,9 +175,11 @@ public class AutoCodeUtil {
         //class类路径
         map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
         //作者
-        map.put("author", autoCodeConfig.getConfigkey("author"));
+        map.put("author", autoConfigModel.getAuthor());
         //时间
         map.put("datetime",new DateTime());
+        //sql需要的权限父级pid
+        map.put("pid",autoConfigModel.getPid());
         VelocityContext velocityContext = new VelocityContext(map);
         //获取模板列表
         List<String> templates = getTemplates();

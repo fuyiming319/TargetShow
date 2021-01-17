@@ -18,20 +18,14 @@ public class V2Config
     private String version;
     /** 版权年份 */
     private String copyrightYear;
-    /** 上传路径 */
-    private static String defaultBaseDir;
-    /** 是否开启 上传static **/
-    private static String isstatic;
-    /** 开启存放静态文件夹后目录 **/
-    private static String isroot_dir;
     /** 邮箱发送smtp */
-    private static String email_smtp;
+    private static String emailSmtp;
     /** 发送邮箱端口 */
-    private static String email_port;
+    private static String emailPort;
     /** 发送邮箱登录账号 */
-    private static String email_account;
+    private static String emailAccount;
     /** 发送邮箱登录密码 */
-    private static String email_password;
+    private static String emailPassword;
     /** 演示模式 **/
     private static String demoEnabled;
     /** 滚动验证码 **/
@@ -66,61 +60,36 @@ public class V2Config
         this.copyrightYear = copyrightYear;
     }
     
-
-	public static String getDefaultBaseDir() {
-		return defaultBaseDir;
+	public static String getEmailSmtp() {
+		return emailSmtp;
 	}
 
-	public  void setDefaultBaseDir(String defaultBaseDir) {
-		V2Config.defaultBaseDir = defaultBaseDir;
+	public static void setEmailSmtp(String emailSmtp) {
+		V2Config.emailSmtp = emailSmtp;
 	}
 
-	public static String getIsstatic() {
-		return isstatic;
+	public static String getEmailPort() {
+		return emailPort;
 	}
 
-	public  void setIsstatic(String isstatic) {
-		V2Config.isstatic = isstatic;
+	public static void setEmailPort(String emailPort) {
+		V2Config.emailPort = emailPort;
 	}
 
-	public static String getIsroot_dir() {
-		return isroot_dir;
+	public static String getEmailAccount() {
+		return emailAccount;
 	}
 
-	public void setIsroot_dir(String isroot_dir) {
-		V2Config.isroot_dir = isroot_dir;
+	public static void setEmailAccount(String emailAccount) {
+		V2Config.emailAccount = emailAccount;
 	}
 
-	public static String getEmail_smtp() {
-		return email_smtp;
+	public static String getEmailPassword() {
+		return emailPassword;
 	}
 
-	public void setEmail_smtp(String email_smtp) {
-		V2Config.email_smtp = email_smtp;
-	}
-
-	public static String getEmail_port() {
-		return email_port;
-	}
-
-	public void setEmail_port(String email_port) {
-		V2Config.email_port = email_port;
-	}
-
-	public static String getEmail_account() {
-		return email_account;
-	}
-
-	public void setEmail_account(String email_account) {
-		V2Config.email_account = email_account;
-	}
-
-	public static String getEmail_password() {
-		return email_password;
-	}
-
-	public void setEmail_password(String email_password) {
-		V2Config.email_password = email_password;
+	public static void setEmailPassword(String emailPassword) {
+		V2Config.emailPassword = emailPassword;
 	}
 
 	public static String getDemoEnabled() {

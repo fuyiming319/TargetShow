@@ -6,7 +6,6 @@ import com.fc.v2.model.custom.email.MailSenderInfo;
 import com.fc.v2.model.custom.email.MyAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -131,12 +130,12 @@ public class SimpleEmailUtil {
 	public static void sendEmail(TSysEmail tSysEmail) throws Exception {
 		// 这个类主要是设置邮件
 		MailSenderInfo mailInfo = new MailSenderInfo();
-		mailInfo.setMailServerHost(V2Config.getEmail_smtp());
-		mailInfo.setMailServerPort(V2Config.getEmail_port());
+		mailInfo.setMailServerHost(V2Config.getEmailSmtp());
+		mailInfo.setMailServerPort(V2Config.getEmailPort());
 		mailInfo.setValidate(true);
 		mailInfo.setSsl(true);
-		mailInfo.setUserName(V2Config.getEmail_account());
-		mailInfo.setPassword(V2Config.getEmail_password());// 您的邮箱密码
+		mailInfo.setUserName(V2Config.getEmailAccount());
+		mailInfo.setPassword(V2Config.getEmailPassword());// 您的邮箱密码
 		mailInfo.setFromAddress(mailInfo.getUserName());//发件人地址
 		mailInfo.setToAddress(tSysEmail.getReceiversEmail());//收件人地址
 		mailInfo.setSubject(tSysEmail.getTitle());

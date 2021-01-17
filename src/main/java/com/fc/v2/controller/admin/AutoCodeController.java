@@ -17,6 +17,8 @@ import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.custom.TsysTables;
 import com.fc.v2.model.custom.TsysTablesVo;
+import com.fc.v2.model.custom.autocode.AutoCodeConfig;
+import com.fc.v2.model.custom.autocode.AutoConfigModel;
 import com.fc.v2.model.custom.autocode.BeanColumn;
 import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.service.GeneratorService;
@@ -94,8 +96,9 @@ public class AutoCodeController extends BaseController {
 	@GetMapping("/global")
 	@RequiresPermissions("system:autocode:global")
 	public String global(ModelMap modelMap) {
-		//modelMap.put("autoConfig", AutoCodeConfig.getGlobalConfig());
-		
+		modelMap.put("author", AutoCodeConfig.getConfig().getProperty("author"));
+		modelMap.put("email", AutoCodeConfig.getConfig().getProperty("author"));
+		modelMap.put("parentPath", AutoCodeConfig.getConfig().getProperty("parentPath"));
 		return prefix + "/global";
 	}
 	
@@ -153,22 +156,19 @@ public class AutoCodeController extends BaseController {
 	 */
 	@PostMapping("/createAuto")
 	@ResponseBody
-	public AjaxResult createAuto(String tableName) {
-		List<TsysTables> tsysTables=generatorService.queryList(tableName);
-		String tableComment = null;
-		if(tsysTables!=null&&tsysTables.size()>0) {
-			tableComment=tsysTables.get(0).getTableComment();
-		}
-		List<BeanColumn> list = generatorService.queryColumns2(tableName);
-		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
+	public AjaxResult createAuto(AutoConfigModel autoConfigModel) {
+		//根据表名查询表字段集合
+		List<BeanColumn> list = generatorService.queryColumns2(autoConfigModel.getTableName());
+		//初始化表信息
+		TableInfo tableInfo=new TableInfo(autoConfigModel.getTableName(), list,autoConfigModel.getTableComment());
 		 
-		AutoCodeUtil.autoCodeOneModel(tableInfo, true, true, true, true);
+		AutoCodeUtil.autoCodeOneModel(tableInfo,autoConfigModel);
 		return AjaxResult.success();
 	}
 	
 	
 	/**
-	 * 生成文件
+	 * 生成文件Zip
 	 * 
 	 * @author fuce
 	 * @throws IOException 
@@ -176,26 +176,23 @@ public class AutoCodeController extends BaseController {
 	 */
 	@GetMapping("/createAutoZip")
 	@ResponseBody
-	public void createAutoZip(String tableName,HttpServletResponse response) throws IOException {
+	public void createAutoZip(AutoConfigModel autoConfigModel,HttpServletResponse response) throws IOException {
 		byte[] b;
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-		List<TsysTables> tsysTables=generatorService.queryList(tableName);
-		String tableComment = null;
-		if(tsysTables!=null&&tsysTables.size()>0) {
-			tableComment=tsysTables.get(0).getTableComment();
-		}
-		List<BeanColumn> list = generatorService.queryColumns2(tableName);
-		TableInfo tableInfo=new TableInfo(tableName, list,tableComment); 
-		AutoCodeUtil.autoCodeOneModel(tableInfo,zip);
+        //根据表名查询表字段集合
+		List<BeanColumn> list = generatorService.queryColumns2(autoConfigModel.getTableName());
+		//初始化表信息
+		TableInfo tableInfo=new TableInfo(autoConfigModel.getTableName(), list,autoConfigModel.getTableComment()); 
+		//自动生成
+		AutoCodeUtil.autoCodeOneModel(tableInfo,autoConfigModel,zip);
 		IOUtils.closeQuietly(zip);
 		b=outputStream.toByteArray();
 		response.reset();  
         response.setHeader("Content-Disposition", "attachment; filename=\"v2.zip\"");  
         response.addHeader("Content-Length", "" + b.length);  
         response.setContentType("application/octet-stream; charset=UTF-8");
-        IOUtils.write(b, response.getOutputStream());  
-		
+        IOUtils.write(b, response.getOutputStream());
 	}
 	
 	

@@ -24,22 +24,7 @@ import com.fc.v2.common.conf.V2Config;
 public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 	
 	private static Logger logger=LoggerFactory.getLogger(WebMvcConfigurationSupport.class);
-	/**
-     * 默认上传的地址
-     */
-    private  String defaultBaseDir = V2Config.getDefaultBaseDir();
-    
-    /**
-     * 静态文件夹后目录
-     */
-    private  String isrootDir=V2Config.getIsroot_dir();
-    
-    /**
-     * 是否上传到static
-     */
-    private   String isstatic=V2Config.getIsstatic();
-	
-	
+
 	/** 解决跨域问题 **/
 	@Override
 	public void addCorsMappings(CorsRegistry registry){
@@ -100,13 +85,6 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-        if(!"Y".equals(isstatic)) {
-        	 //配置上传路径为D盘
-            registry.addResourceHandler("/static/file_upload/**").addResourceLocations("file:"+defaultBaseDir);
-            logger.info("初始化文件上传路径为项目【"+defaultBaseDir+"】路径");
-        }else {
-        	logger.info("初始化文件上传路径为项目【"+isrootDir+"】路径");
-        }
         super.addResourceHandlers(registry);
 
     }

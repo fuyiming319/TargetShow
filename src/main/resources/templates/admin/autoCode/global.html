@@ -98,22 +98,20 @@
     	<div class="layui-card">
 	    	<div class="layui-tab layui-tab-brief">
 				<ul class="layui-tab-title">
-					<li class="layui-this">网站设置</li>
-				    <li>用户管理<span class="layui-badge-dot"></span></li>
-					<li>最新邮件<span class="layui-badge">99+</span></li>
+					<li class="layui-this">配置</li>
+				    <li>待开发</li>
 				</ul>
 				<div class="layui-tab-content">
 					<div class="layui-tab-item layui-show">
-						<form class="layui-form layui-form-pane" action="">
-						   	内部结构都一样，值得注意的是 复选框/开关/单选框 这些组合在该风格下需要额外添加 pane属性（否则会看起来比较别扭），如：
+						<form class="layui-form layui-form-pane" lay-filter="autoConfigForm" action="">
+						   	注意:自动生成父菜单必选
 						    <div class="layui-form-item">
 						    	<div class="layui-inline">
 						    		<label class="layui-form-label">
 										表名称
 							        </label>
 							        <div class="layui-input-inline">
-							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
-							            autocomplete="off" class="layui-input">
+							            <input id="tableName" type="text" name="tableName" autocomplete="off" class="layui-input">
 							        </div>
 						    	</div>
 						    	<div class="layui-inline">
@@ -121,8 +119,7 @@
 										表描述
 							        </label>
 							        <div class="layui-input-inline">
-							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
-							            autocomplete="off" class="layui-input">
+							            <input id="tableComment" type="text" name="tableComment" autocomplete="off" class="layui-input">
 							        </div>
 							    </div>
 						    </div>
@@ -132,8 +129,7 @@
 							           	作者
 							        </label>
 							        <div class="layui-input-inline">
-							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
-							            autocomplete="off" class="layui-input">
+							            <input th:value="${author}" type="text" name="author" autocomplete="off" class="layui-input">
 							        </div>
 						    	</div>
 						        <div class="layui-inline">
@@ -145,10 +141,17 @@
 							        </div>
 						    	</div>
 						    </div>
+						    <div class="layui-form-item">
+								<div class="layui-form-item" pane>
+									<label class="layui-form-label">自定义路径</label>
+									<div class="layui-input-block">
+									  <input th:value="${parentPath}" type="text" name="parentPath" autocomplete="off" placeholder="请输入标题" class="layui-input">
+									</div>
+								</div>
+							</div>
 						</form>
 					</div>
-					<div class="layui-tab-item">2</div>
-					<div class="layui-tab-item">3</div>		  
+					<div class="layui-tab-item"></div>	  
 				</div>
 			</div>
     	</div>
@@ -274,10 +277,14 @@
             record: true,
             response: {treeId: "id", parentId: "parentId", title: "tableAndName"}
         });
+        
         //tree点击事件
         dtree.on("node('dept-tree')" ,function(obj){
             let field = form.val("user-query-form");
+            console.log(obj.param.recordData);
             field.tableName =  obj.param.recordData.tableName;
+            $("#tableName").val(obj.param.recordData.tableName);
+            $("#tableComment").val(obj.param.recordData.tableComment);
             tableName=field.tableName;
             window.refresh(field);
         });
@@ -357,11 +364,14 @@
             document.location.href=MODULE_PATH + "/createAutoZip?tableName="+tableName
         }
         
+      	//生成后台
         window.createAdmin = function () {
+        	var autoConfigData = form.val("autoConfigForm");
         	let loading = layer.load();
         	 $.ajax({
-                 url: MODULE_PATH + "/createAuto?tableName="+tableName,
+                 url: MODULE_PATH + "/createAuto",
                  dataType: 'json',
+                 data:autoConfigData,
                  contentType: 'application/x-www-form-urlencoded',
                  type: 'post',
                  success: function (result) {
