@@ -9,7 +9,6 @@ import com.fc.v2.model.auto.SysInterUrlExample;
 import com.fc.v2.service.SysInterUrlService;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.List;
  *
  */
 public class MyInterceptor  implements HandlerInterceptor {
-	
 	/*************演示模式需要 start*************/
 	/**需要被拦截的post请求url**/
 	public static List<SysInterUrl> posturllist=new ArrayList<SysInterUrl>();
@@ -124,11 +122,12 @@ public class MyInterceptor  implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
+		V2Config v2Config= SpringUtils.getBean(V2Config.class);
 		//设置前端的全局 地址，如果前端网页错乱请修改这儿
 		request.setAttribute("rootPath", request.getContextPath());
 		//System.out.println(request.getContextPath());
 		//yml里面得演示模式true 为开启 就会拉取数据拦截表进行判断符合得就拦截
-		if(V2Config.getDemoEnabled().equals("true")) {
+		if(v2Config.getDemoEnabled().equals("true")) {
 			Boolean b = ifurl(request, response);
 			if(b) {
 				throw new DemoModeException();

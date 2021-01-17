@@ -1,6 +1,7 @@
 package com.fc.v2.util;
 
 import com.fc.v2.common.conf.V2Config;
+import com.fc.v2.common.spring.SpringUtils;
 import com.fc.v2.model.auto.TSysEmail;
 import com.fc.v2.model.custom.email.MailSenderInfo;
 import com.fc.v2.model.custom.email.MyAuthenticator;
@@ -128,14 +129,15 @@ public class SimpleEmailUtil {
 	}
 	
 	public static void sendEmail(TSysEmail tSysEmail) throws Exception {
+		V2Config v2Config= SpringUtils.getBean(V2Config.class);
 		// 这个类主要是设置邮件
 		MailSenderInfo mailInfo = new MailSenderInfo();
-		mailInfo.setMailServerHost(V2Config.getEmailSmtp());
-		mailInfo.setMailServerPort(V2Config.getEmailPort());
+		mailInfo.setMailServerHost(v2Config.getEmailSmtp());
+		mailInfo.setMailServerPort(v2Config.getEmailPort());
 		mailInfo.setValidate(true);
 		mailInfo.setSsl(true);
-		mailInfo.setUserName(V2Config.getEmailAccount());
-		mailInfo.setPassword(V2Config.getEmailPassword());// 您的邮箱密码
+		mailInfo.setUserName(v2Config.getEmailAccount());
+		mailInfo.setPassword(v2Config.getEmailPassword());// 您的邮箱密码
 		mailInfo.setFromAddress(mailInfo.getUserName());//发件人地址
 		mailInfo.setToAddress(tSysEmail.getReceiversEmail());//收件人地址
 		mailInfo.setSubject(tSysEmail.getTitle());

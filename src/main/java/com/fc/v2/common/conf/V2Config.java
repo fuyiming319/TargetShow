@@ -19,95 +19,71 @@ public class V2Config
     /** 版权年份 */
     private String copyrightYear;
     /** 邮箱发送smtp */
-    private static String emailSmtp;
+    private String emailSmtp;
     /** 发送邮箱端口 */
-    private static String emailPort;
+    private String emailPort;
     /** 发送邮箱登录账号 */
-    private static String emailAccount;
+    private String emailAccount;
     /** 发送邮箱登录密码 */
-    private static String emailPassword;
+    private String emailPassword;
     /** 演示模式 **/
-    private static String demoEnabled;
+    private String demoEnabled;
     /** 滚动验证码 **/
-    private static Boolean rollVerification;
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getVersion()
-    {
-        return version;
-    }
-
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
-
-    public String getCopyrightYear()
-    {
-        return copyrightYear;
-    }
-
-    public void setCopyrightYear(String copyrightYear)
-    {
-        this.copyrightYear = copyrightYear;
-    }
-    
-	public static String getEmailSmtp() {
+    private Boolean rollVerification;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public String getCopyrightYear() {
+		return copyrightYear;
+	}
+	public void setCopyrightYear(String copyrightYear) {
+		this.copyrightYear = copyrightYear;
+	}
+	public String getEmailSmtp() {
 		return emailSmtp;
 	}
-
-	public static void setEmailSmtp(String emailSmtp) {
-		V2Config.emailSmtp = emailSmtp;
+	public void setEmailSmtp(String emailSmtp) {
+		this.emailSmtp = emailSmtp;
 	}
-
-	public static String getEmailPort() {
+	public String getEmailPort() {
 		return emailPort;
 	}
-
-	public static void setEmailPort(String emailPort) {
-		V2Config.emailPort = emailPort;
+	public void setEmailPort(String emailPort) {
+		this.emailPort = emailPort;
 	}
-
-	public static String getEmailAccount() {
+	public String getEmailAccount() {
 		return emailAccount;
 	}
-
-	public static void setEmailAccount(String emailAccount) {
-		V2Config.emailAccount = emailAccount;
+	public void setEmailAccount(String emailAccount) {
+		this.emailAccount = emailAccount;
 	}
-
-	public static String getEmailPassword() {
+	public String getEmailPassword() {
 		return emailPassword;
 	}
-
-	public static void setEmailPassword(String emailPassword) {
-		V2Config.emailPassword = emailPassword;
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
 	}
-
-	public static String getDemoEnabled() {
+	public String getDemoEnabled() {
 		return demoEnabled;
 	}
-
 	public void setDemoEnabled(String demoEnabled) {
-		V2Config.demoEnabled = demoEnabled;
+		this.demoEnabled = demoEnabled;
 	}
-
-	public static Boolean getRollVerification() {
+	public Boolean getRollVerification() {
 		return rollVerification;
 	}
-
 	public void setRollVerification(Boolean rollVerification) {
-		V2Config.rollVerification = rollVerification;
+		this.rollVerification = rollVerification;
 	}
-	
-	
+    
 	
 }

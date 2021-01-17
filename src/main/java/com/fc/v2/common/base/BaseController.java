@@ -1,6 +1,7 @@
 package com.fc.v2.common.base;
 
 import cn.hutool.core.util.StrUtil;
+import com.fc.v2.common.conf.V2Config;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
@@ -47,6 +48,9 @@ public class BaseController
      */
 	@Autowired
 	public SysFileService sysFileService;
+	//配置文件
+	@Autowired
+	public V2Config v2Config;
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型

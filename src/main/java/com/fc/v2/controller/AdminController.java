@@ -1,7 +1,6 @@
 package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
-import com.fc.v2.common.conf.V2Config;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysNotice;
 import com.fc.v2.model.auto.TsysUser;
@@ -80,9 +79,8 @@ public class AdminController extends BaseController {
 				return "redirect:/" + prefix + "/index";
 			} else {
 				System.out.println("--进行登录验证..验证开始");
-
-				modelMap.put("RollVerification", V2Config.getRollVerification());
-				System.out.println("V2Config.getRollVerification()>>>" + V2Config.getRollVerification());
+				modelMap.put("RollVerification", v2Config.getRollVerification());
+				System.out.println("V2Config.getRollVerification()>>>" + v2Config.getRollVerification());
 				return "login";
 			}
 		} catch (Exception e) {

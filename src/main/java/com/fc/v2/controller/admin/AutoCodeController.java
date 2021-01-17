@@ -47,38 +47,7 @@ public class AutoCodeController extends BaseController {
 	@Autowired
 	private GeneratorService generatorService;
 	//@Autowired
-	//private SysUtilService sysUtilService;
-
-//	/**
-//	 * 
-//	 * 
-//	 * @param model
-//	 * @return
-//	 * @author fuce
-//	 * @Date 2019年8月13日 上午12:35:23
-//	 */
-//	@ApiOperation(value = " 代码自动生成展示首页", notes = " 代码自动生成展示首页")
-//	@GetMapping("/one")
-//	@RequiresPermissions("system:autocode:one")
-//	public String one(ModelMap model) {
-//
-//		return prefix + "/one";
-//	}
-//	/**
-//	 * 
-//	 * @param model
-//	 * @return
-//	 * @author fuce
-//	 * @Date 2021年1月14日 上午12:29:40
-//	 */
-//	@ApiOperation(value = " 代码自动生成展示首页", notes = " 代码自动生成展示首页")
-//	@GetMapping("/view")
-//    public String view(ModelMap model)
-//    {
-//        return prefix + "/list";
-//    }
-	
-	
+	//private SysUtilService sysUtilService;	
 
 	/**
 	 * 代码自动生成全局配置
