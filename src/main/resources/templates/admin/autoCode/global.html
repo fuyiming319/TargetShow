@@ -94,6 +94,65 @@
         </div>
     </div>
     <div class="user-main">
+    	
+    	<div class="layui-card">
+	    	<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+					<li class="layui-this">网站设置</li>
+				    <li>用户管理<span class="layui-badge-dot"></span></li>
+					<li>最新邮件<span class="layui-badge">99+</span></li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<form class="layui-form layui-form-pane" action="">
+						   	内部结构都一样，值得注意的是 复选框/开关/单选框 这些组合在该风格下需要额外添加 pane属性（否则会看起来比较别扭），如：
+						    <div class="layui-form-item">
+						    	<div class="layui-inline">
+						    		<label class="layui-form-label">
+										表名称
+							        </label>
+							        <div class="layui-input-inline">
+							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
+							            autocomplete="off" class="layui-input">
+							        </div>
+						    	</div>
+						    	<div class="layui-inline">
+							        <label class="layui-form-label">
+										表描述
+							        </label>
+							        <div class="layui-input-inline">
+							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
+							            autocomplete="off" class="layui-input">
+							        </div>
+							    </div>
+						    </div>
+						    <div class="layui-form-item">
+						    	<div class="layui-inline">
+							    	<label class="layui-form-label">
+							           	作者
+							        </label>
+							        <div class="layui-input-inline">
+							            <input type="text" name="username" lay-verify="required" placeholder="请输入"
+							            autocomplete="off" class="layui-input">
+							        </div>
+						    	</div>
+						        <div class="layui-inline">
+							    	<label class="layui-form-label">
+							           	<span class="layui-badge-dot"></span> 父菜单
+							        </label>
+							        <div class="layui-input-inline">
+							            <ul id="selectParent" name="parentId" class="dtree" data-id="-1"></ul>
+							        </div>
+						    	</div>
+						    </div>
+						</form>
+					</div>
+					<div class="layui-tab-item">2</div>
+					<div class="layui-tab-item">3</div>		  
+				</div>
+			</div>
+    	</div>
+    
         <div class="layui-card">
             <div class="layui-card-body">
                 <table id="user-table" lay-filter="user-table"></table>
@@ -103,16 +162,24 @@
 </body>
 
 <script type="text/html" id="user-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="createAdmin">
         <i class="pear-icon pear-icon-column-vertical"></i>
     	生成后台类
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="createHTML">
         <i class="pear-icon pear-icon-layout"></i>
        	生成HTML
     </button>
+	<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="view">
+        <i class="pear-icon pear-icon-browse"></i>
+       	预览
+    </button>
+	<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="zip">
+        <i class="pear-icon pear-icon-browse"></i>
+       	生成zip
+    </button>
     <button class="pear-btn pear-btn-warming pear-btn-md" lay-event="collasped">
-        <i class="pear-icon pear-icon-move"></i>
+        <i class="layui-icon layui-icon-screen-full"></i>
        	放大
     </button>
 </script>
@@ -146,16 +213,18 @@
 
 <th:block th:include="include :: footer"/>
 <script>
-    layui.use(['table', 'dtree','form', 'jquery'], function () {
+    layui.use(['table', 'dtree','form','element','jquery'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
+        let element = layui.element;
         let dtree = layui.dtree;
-        let MODULE_PATH = "/autoCodeController";
+        let MODULE_PATH = rootPath+"/autoCodeController";
+        let PERMISSION_PATH = rootPath+"/PermissionController";
         let tableName;
         let cols = [
             [
-                {type: 'checkbox'},
+                /* {type: 'checkbox'}, */
                 {title: '字段名', field: 'column_name', align: 'center', width: 110},
                 {title: '实体名称', field: 'beanName', align: 'center'},
                 {title: '数据库类型', field: 'column_type', align: 'center'},
@@ -164,16 +233,29 @@
                 {title: '是否自增', field: 'extra', align: 'center'},
                 {title: '是否可为空', field: 'is_nullable', align: 'center'},
                 {title: '默认值', field: 'column_default', align: 'center'},
-                {title: '备注', field: 'column_comment', align: 'center'},
-                {title: '操作', toolbar: '#user-bar', align: 'center'}
+                {title: '备注', field: 'column_comment', align: 'center'}
+               /*  {title: '操作', toolbar: '#user-bar', align: 'center'} */
             ]
         ]
-
+		
+        //权限树
+        dtree.renderSelect({
+            elem: "#selectParent",
+            url: PERMISSION_PATH+"/selectParent",
+            method: 'get',
+            selectInputName: {nodeId: "pid"},
+            skin: "layui",
+            dataFormat: "list",
+            response: {treeId: "id", parentId: "pid", title: "name"},  //修改response中返回数据的定义
+            selectInitVal: "0"
+        });
+        
         table.render({
             elem: '#user-table',
             url: MODULE_PATH + '/queryTableInfo',
             page: false,
             cols: cols,
+            zIndex:120, //层优先级
             skin: 'line',
             height: 'full-148',
             toolbar: '#user-toolbar',
@@ -184,6 +266,7 @@
         dtree.render({
             elem: "#dept-tree",
             method: "get",
+            height: 'full',
             url: MODULE_PATH+"/selectTables",
             dataFormat: "list",//配置data的风格为list
             icon: ["0","-1"],
@@ -227,12 +310,16 @@
         });
 
         table.on('toolbar(user-table)', function (obj) {
-            if (obj.event === 'add') {
-                window.add();
+            if (obj.event === 'createAdmin') {
+                window.createAdmin();
             } else if (obj.event === 'refresh') {
                 window.refresh();
-            } else if (obj.event === 'batchRemove') {
-                window.batchRemove(obj);
+            } else if (obj.event === 'createHTML') {
+                window.createHTML(obj);
+            } else if (obj.event === 'view') {
+                window.view(obj);
+            } else if (obj.event === 'zip') {
+                window.zip(obj);
             } else if(obj.event == 'collasped'){
                 if($(".user-left").hasClass("user-collasped")){
                     $(".user-left").removeClass("user-collasped");
@@ -250,35 +337,28 @@
             return false;
         });
 
-        form.on('switch(user-enable)', function (obj) {
-            let operate;
+		
 
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load()
-
-            $.ajax({
-                url: '/system/user/' + operate,
-                data: JSON.stringify({userId: this.value}),
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'put',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                        });
-                    } else {
-                        layer.msg(result.msg, {icon: 2, time: 1000});
-                    }
-                }
-            })
-        });
-
-        window.add = function () {
+        //预览
+        window.view = function () {
+        	var index = layer.open({
+                type: 2,
+                title: '预览',
+                shade: 0.1,
+                maxmin: true,
+                area: ['800px', '600px'],
+                content: MODULE_PATH + "/viewAuto?tableName="+tableName
+            });
+            layer.full(index);
+        }
+        
+      	//zip
+        window.zip = function () {
+            document.location.href=MODULE_PATH + "/createAutoZip?tableName="+tableName
+        }
+        
+        window.createAdmin = function () {
+        	let loading = layer.load();
         	 $.ajax({
                  url: MODULE_PATH + "/createAuto?tableName="+tableName,
                  dataType: 'json',
@@ -286,7 +366,7 @@
                  type: 'post',
                  success: function (result) {
                      layer.close(loading);
-                     if (result.success) {
+                     if (result.code==200) {
                          layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                              obj.del();
                          });
@@ -297,69 +377,9 @@
              })
         }
 
-        window.edit = function (obj) {
-            layer.open({
-                type: 2,
-                title: '修改',
-                shade: 0.1,
-                area: ['550px', '500px'],
-                content: MODULE_PATH + 'edit?userId=' + obj.data['userId']
-            });
-        }
 
-        window.remove = function (obj) {
-            layer.confirm('确定要删除该用户', {icon: 3, title: '提示'}, function (index) {
-                layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH + "remove/" + obj.data['userId'],
-                    dataType: 'json',
-                    type: 'delete',
-                    success: function (result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                                obj.del();
-                            });
-                        } else {
-                            layer.msg(result.msg, {icon: 2, time: 1000});
-                        }
-                    }
-                })
-            });
-        }
+       
 
-        window.batchRemove = function (obj) {
-            let data = table.checkStatus(obj.config.id).data;
-            if (data.length === 0) {
-                layer.msg("未选中数据", {icon: 3, time: 1000});
-                return false;
-            }
-            let ids = "";
-            for (let i = 0; i < data.length; i++) {
-                ids += data[i].userId + ",";
-            }
-            ids = ids.substr(0, ids.length - 1);
-            layer.confirm('确定要删除这些用户', {icon: 3, title: '提示'}, function (index) {
-                layer.close(index);
-                let loading = layer.load();
-                $.ajax({
-                    url: MODULE_PATH + "batchRemove/" + ids,
-                    dataType: 'json',
-                    type: 'delete',
-                    success: function (result) {
-                        layer.close(loading);
-                        if (result.success) {
-                            layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                                table.reload('user-table');
-                            });
-                        } else {
-                            layer.msg(result.msg, {icon: 2, time: 1000});
-                        }
-                    }
-                })
-            });
-        }
 
         window.refresh = function (param) {
             table.reload('user-table', {where: param});

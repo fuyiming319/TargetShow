@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="include :: header('全局配置')"/>
+    <link rel="stylesheet" th:href="@{/static/component/highlight/styles/default.css}">
+	<script th:src="@{/static/component/highlight/highlight.pack.js}"></script>
+	<style type="text/css">
+		div.code {
+		  white-space: pre;
+		}
+	</style>
+</head>
+<body class="pear-container">
+
+    <div class="user-main">
+    	
+    	<div class="layui-card">
+	    	<div class="layui-tab layui-tab-brief">
+				<ul class="layui-tab-title">
+				    <li th:each="mapEntry: ${viewmap}" th:text="${mapEntry.key}">用户管理</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item" th:each="mapEntry: ${viewmap}">
+						<pre>
+							<code class="java" lay-title="" lay-height="" lay-skin="" lay-encode="false" th:text="${mapEntry.value}">
+							</code>
+						</pre>
+					</div>  
+				</div>
+			</div>
+    	</div>
+    </div>
+</body>
+
+
+<th:block th:include="include :: footer"/>
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+	  document.querySelectorAll('pre code').forEach((block) => {
+	    hljs.highlightBlock(block);
+	  });
+	});
+    layui.use(['dtree','element','jquery'], function () {
+        
+    })
+</script>
+</html>

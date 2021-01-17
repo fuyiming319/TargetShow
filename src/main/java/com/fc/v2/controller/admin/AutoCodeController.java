@@ -1,7 +1,14 @@
 package com.fc.v2.controller.admin;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.fc.v2.common.base.BaseController;
@@ -15,6 +22,8 @@ import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.service.GeneratorService;
 import com.fc.v2.service.SysUtilService;
 import com.fc.v2.util.AutoCode.AutoCodeUtil;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -152,9 +161,63 @@ public class AutoCodeController extends BaseController {
 		}
 		List<BeanColumn> list = generatorService.queryColumns2(tableName);
 		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
-		
+		 
 		AutoCodeUtil.autoCodeOneModel(tableInfo, true, true, true, true);
 		return AjaxResult.success();
+	}
+	
+	
+	/**
+	 * 生成文件
+	 * 
+	 * @author fuce
+	 * @throws IOException 
+	 * @Date 2021年1月15日 下午2:21:55
+	 */
+	@GetMapping("/createAutoZip")
+	@ResponseBody
+	public void createAutoZip(String tableName,HttpServletResponse response) throws IOException {
+		byte[] b;
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+		List<TsysTables> tsysTables=generatorService.queryList(tableName);
+		String tableComment = null;
+		if(tsysTables!=null&&tsysTables.size()>0) {
+			tableComment=tsysTables.get(0).getTableComment();
+		}
+		List<BeanColumn> list = generatorService.queryColumns2(tableName);
+		TableInfo tableInfo=new TableInfo(tableName, list,tableComment); 
+		AutoCodeUtil.autoCodeOneModel(tableInfo,zip);
+		IOUtils.closeQuietly(zip);
+		b=outputStream.toByteArray();
+		response.reset();  
+        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");  
+        response.addHeader("Content-Length", "" + b.length);  
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        IOUtils.write(b, response.getOutputStream());  
+		
+	}
+	
+	
+
+	/**
+	 * 预览生成文件
+	 * 
+	 * @author fuce
+	 * @Date 2021年1月15日 下午2:21:55
+	 */
+	@GetMapping("/viewAuto")
+	public String viewAuto(String tableName,ModelMap model) {
+		List<TsysTables> tsysTables=generatorService.queryList(tableName);
+		String tableComment = null;
+		if(tsysTables!=null&&tsysTables.size()>0) {
+			tableComment=tsysTables.get(0).getTableComment();
+		}
+		List<BeanColumn> list = generatorService.queryColumns2(tableName);
+		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
+		 Map<String,String> map= AutoCodeUtil.viewAuto(tableInfo);
+		 model.put("viewmap", map);
+		 return prefix + "/view";
 	}
 	
 	

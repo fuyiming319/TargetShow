@@ -1,16 +1,21 @@
 package com.fc.v2.util.AutoCode;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -29,9 +34,6 @@ import cn.hutool.core.date.DateTime;
 * @date 2019-11-20 22:05
  */
 public class AutoCodeUtil {
-
-	/**生成文件路径**/
-	private static String targetPath = "c://";
 	public static List<String> getTemplates(){
         List<String> templates = new ArrayList<String>();
 
@@ -110,7 +112,9 @@ public class AutoCodeUtil {
         	templates.remove("auto_code/mapper/EntityMapper.java.vm");
 		}
         
-        
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+      
         for (String template : templates) {
         	try {
         		if(template.contains("menu.sql.vm")) {
@@ -121,14 +125,21 @@ public class AutoCodeUtil {
 //            			System.out.println(sw);
 //            			executeSQL(sysUtilService, sw.toString());
 //        			}else {//只输出
-//        				Template tpl = Velocity.getTemplate(template, "UTF-8" );
-//            			StringWriter sw = new StringWriter(); 
-//            			tpl.merge(context, sw);
-//            			System.out.println(sw);
-//        			}
+        				Template tpl = Velocity.getTemplate(template, "UTF-8" );
+            			StringWriter sw = new StringWriter(); 
+            			tpl.merge(context, sw);
+            			System.out.println("输出sql");
+            			System.out.println(sw);
+            			System.out.println("输出sql end");
+        			//}
+            			  zip.putNextEntry(new ZipEntry(template));
+            			  IOUtils.write(sw.toString(), zip, "UTF-8");
+                          IOUtils.closeQuietly(sw);
+                          zip.closeEntry();
         			
         		}else {
-        			String filepath=getCoverFileName(template,tableInfo.getJavaTableName_a() ,tableInfo.getJavaTableName() ,autoCodeConfig.getConfigkey("parentPack"), "model","gen");
+        			String targetPath = "c://";
+        			String filepath=getCoverFileName(template,tableInfo ,autoCodeConfig.getConfigkey("parentPack"),targetPath);
     		        Template tpl = Velocity.getTemplate(template, "UTF-8" );
     				File file = new File(filepath);
     				if (!file.getParentFile().exists())
@@ -156,48 +167,198 @@ public class AutoCodeUtil {
 	
 	
 	
+	
 
 	/**
-     * 获取覆盖路径
-     */
-    public static String getCoverFileName(String template,String classname,String className, String packageName, String moduleName,String controller) {
+	 * 创建单表
+	 * @param tableName 表名
+	 * @param conditionQueryField  条件查询字段
+	 * @param pid 父id
+	 * @param sqlcheck 是否录入数据
+	 * @param vhtml 生成html
+	 * @param vController 生成controller
+	 * @param vservice 生成service
+	 * @param vMapperORdao 生成mapper or dao
+	 * @author fuce
+	 * @Date 2019年8月24日 下午11:44:54
+	 */
+	/**
+	 * 自动生成
+	 * @param tableInfo
+	 * @param zip
+	 * @author fuce
+	 * @Date 2021年1月17日 下午7:37:50
+	 */
+	public static void autoCodeOneModel(TableInfo tableInfo,ZipOutputStream zip){
+		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
+		//设置velocity资源加载器
+        Properties prop = new Properties();
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
+        Velocity.init(prop);
+		Map<String, Object> map = new HashMap<>();
+        //数据库表数据
+		map.put("tableInfo",tableInfo);
+        //字段集合
+        map.put("beanColumns",tableInfo.getBeanColumns());
+        //配置文件
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
+        //class类路径
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
+        //作者
+        map.put("author", autoCodeConfig.getConfigkey("author"));
+        //时间
+        map.put("datetime",new DateTime());
+        VelocityContext velocityContext = new VelocityContext(map);
+        //获取模板列表
+        List<String> templates = getTemplates();
+        for (String template : templates) {
+        	try {
+					String filepath=getCoverFileName(template,tableInfo ,autoCodeConfig.getConfigkey("parentPack"),"");
+					Template tpl = Velocity.getTemplate(template, "UTF-8" );
+					StringWriter sw = new StringWriter();
+					tpl.merge(velocityContext, sw);
+					zip.putNextEntry(new ZipEntry(filepath));
+					IOUtils.write(sw.toString(), zip, "UTF-8");
+					IOUtils.closeQuietly(sw);
+					zip.closeEntry();
+        	} catch (IOException e) {
+                try {
+					throw new Exception("渲染模板失败，表名：" +"c"+"\n"+e.getMessage());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+            }
+        }
+	}
+	
+	
+
+	/**
+	 * 
+	 * @param template
+	 * @param classname
+	 * @param className
+	 * @param packageName
+	 * @param moduleName
+	 * @param controller
+	 * @return
+	 * @author fuce
+	 * @Date 2021年1月17日 下午6:40:57
+	 */
+    public static String getCoverFileName(String template,TableInfo tableInfo, String packageName,String targetPath) {
         
-    	String packagePath =targetPath+File.separator+"src"+File.separator + "main" + File.separator + "java" + File.separator;
-        String resourcesPath=targetPath+File.separator+"src"+File.separator + "main" + File.separator+"resources"+ File.separator;;
+    	String separator=File.separator;
+    	String packagePath =targetPath+separator+"src"+separator + "main" + separator + "java" + separator;
+        String resourcesPath=targetPath+separator+"src"+separator + "main" + separator+"resources"+ separator;;
         if (StringUtils.isNotBlank(packageName)) {
-            packagePath += packageName.replace(".", File.separator) + File.separator;
+            packagePath += packageName.replace(".", separator) + separator;
         }
 
         if (template.contains("Entity.java.vm")) {//model.java
-            return packagePath+moduleName +File.separator+ "auto" + File.separator + className + ".java";
+            return packagePath+"model" +separator+ "auto" + separator + tableInfo.getJavaTableName() + ".java";
         }
         if(template.contains("EntityExample.java.vm")) {//modelExample.java
-        	return packagePath+moduleName +File.separator+ "auto" + File.separator + className + "Example.java";
+        	return packagePath+"model" +separator+ "auto" + separator + tableInfo.getJavaTableName() + "Example.java";
         }
         
         if (template.contains("EntityMapper.java.vm")) {//daomapper.java
-            return packagePath + "mapper" + File.separator + "auto" + File.separator + className + "Mapper.java";
+            return packagePath + "mapper" + separator + "auto" + separator + tableInfo.getJavaTableName() + "Mapper.java";
         }
         if (template.contains("EntityMapper.xml.vm")) {//daomapper.xml
-            return resourcesPath+"mybatis" + File.separator+"auto"+ File.separator + className + "Mapper.xml";
+            return resourcesPath+"mybatis" + separator+"auto"+ separator + tableInfo.getJavaTableName() + "Mapper.xml";
         }
         
         if (template.contains("EntityService.java.vm")) {
-            return packagePath + "service" + File.separator + className + "Service.java";
+            return packagePath + "service" + separator + tableInfo.getJavaTableName() + "Service.java";
         }
         if(template.contains("EntityController.java.vm")) {
-        	 return packagePath + "controller" + File.separator + controller + File.separator + className + "Controller.java";
+        	 return packagePath + "controller" + separator + "gen" + separator + tableInfo.getJavaTableName() + "Controller.java";
         }
         if(template.contains("list.html.vm")) {
-        	 return resourcesPath+"templates"+File.separator + controller+File.separator + classname+File.separator +"list.html";
+        	 return resourcesPath+"templates"+separator + "gen"+separator + tableInfo.getJavaTableName_a()+separator +"list.html";
         }
         if(template.contains("add.html.vm")) {
-        	System.err.println(resourcesPath+"templates"+File.separator + controller+File.separator + classname+File.separator );
-       	 	 return resourcesPath+"templates"+File.separator + controller+File.separator + classname+File.separator +"add.html";
+        	System.err.println(resourcesPath+"templates"+separator + "gen"+separator + tableInfo.getJavaTableName_a()+separator );
+       	 	 return resourcesPath+"templates"+separator + "gen"+separator + tableInfo.getJavaTableName_a()+separator +"add.html";
         }
         if(template.contains("edit.html.vm")) {
-       	 	return  resourcesPath+"templates"+File.separator + controller+File.separator + classname+File.separator +"edit.html";
+       	 	return  resourcesPath+"templates"+separator + "gen"+separator + tableInfo.getJavaTableName_a()+separator +"edit.html";
         }
-        return null;
+        if(template.contains("menu.sql.vm")) {
+       	 	return  resourcesPath+"sql"+separator +"menu.sql";
+        }
+        return "";
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+	/**
+	 * 创建单表
+	 * @param tableName 表名
+	 * @param conditionQueryField  条件查询字段
+	 * @param pid 父id
+	 * @param sqlcheck 是否录入数据
+	 * @param vhtml 生成html
+	 * @param vController 生成controller
+	 * @param vservice 生成service
+	 * @param vMapperORdao 生成mapper or dao
+	 * @author fuce
+	 * @Date 2019年8月24日 下午11:44:54
+	 */
+	public static Map<String,String> viewAuto(TableInfo tableInfo){
+		Map<String, String> velocityMap=new HashMap<String, String>();
+		
+		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
+		//设置velocity资源加载器
+        Properties prop = new Properties();
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        Velocity.init(prop);
+		Map<String, Object> map = new HashMap<>();
+        //数据库表数据                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+		map.put("tableInfo",tableInfo);
+        //字段集合
+        map.put("beanColumns",tableInfo.getBeanColumns());
+        //配置文件
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
+        //class类路径
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
+        //作者
+        map.put("author", autoCodeConfig.getConfigkey("author"));
+        //时间
+        map.put("datetime",new DateTime());
+        VelocityContext velocityContext = new VelocityContext(map);
+        //获取模板列表
+        List<String> templates = getTemplates();
+        for (String template : templates) {
+			Template tpl = Velocity.getTemplate(template, "UTF-8" );
+			StringWriter sw = new StringWriter(); 
+			tpl.merge(velocityContext, sw);
+			System.out.println("输出模板");
+			System.out.println(sw);
+			System.out.println("输出模板 end");
+			velocityMap.put(template.substring(template.lastIndexOf("/")+1, template.lastIndexOf(".vm")), sw.toString());
+        }
+        return velocityMap;
+	}
+	
 }
