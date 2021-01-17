@@ -191,7 +191,7 @@ public class AutoCodeController extends BaseController {
 		IOUtils.closeQuietly(zip);
 		b=outputStream.toByteArray();
 		response.reset();  
-        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");  
+        response.setHeader("Content-Disposition", "attachment; filename=\"v2.zip\"");  
         response.addHeader("Content-Length", "" + b.length);  
         response.setContentType("application/octet-stream; charset=UTF-8");
         IOUtils.write(b, response.getOutputStream());  
