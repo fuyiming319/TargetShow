@@ -1,7 +1,5 @@
 package com.fc.v2.common.interceptor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import com.fc.v2.common.conf.V2Config;
 
 /**
  * 拦截器
@@ -23,7 +20,7 @@ import com.fc.v2.common.conf.V2Config;
 @Configuration
 public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 	
-	private static Logger logger=LoggerFactory.getLogger(WebMvcConfigurationSupport.class);
+	//private static Logger logger=LoggerFactory.getLogger(WebMvcConfigurationSupport.class);
 
 	/** 解决跨域问题 **/
 	@Override

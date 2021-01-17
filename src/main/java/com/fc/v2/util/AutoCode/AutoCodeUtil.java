@@ -1,7 +1,6 @@
 package com.fc.v2.util.AutoCode;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,18 +13,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-
 import com.fc.v2.model.custom.autocode.AutoCodeConfig;
 import com.fc.v2.model.custom.autocode.AutoConfigModel;
 import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.fc.v2.util.StringUtils;
-
 import cn.hutool.core.date.DateTime;
 
 /**

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
-
 import javax.servlet.http.HttpServletResponse;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.fc.v2.common.base.BaseController;
@@ -22,9 +20,7 @@ import com.fc.v2.model.custom.autocode.AutoConfigModel;
 import com.fc.v2.model.custom.autocode.BeanColumn;
 import com.fc.v2.model.custom.autocode.TableInfo;
 import com.fc.v2.service.GeneratorService;
-import com.fc.v2.service.SysUtilService;
 import com.fc.v2.util.AutoCode.AutoCodeUtil;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +46,8 @@ public class AutoCodeController extends BaseController {
 	private String prefix = "admin/autoCode";
 	@Autowired
 	private GeneratorService generatorService;
-	@Autowired
-	private SysUtilService sysUtilService;
+	//@Autowired
+	//private SysUtilService sysUtilService;
 
 //	/**
 //	 * 
