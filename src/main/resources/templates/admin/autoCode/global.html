@@ -158,7 +158,7 @@
     
         <div class="layui-card">
             <div class="layui-card-body">
-                <table id="user-table" lay-filter="user-table"></table>
+                <table id="global-table" lay-filter="global-table"></table>
             </div>
         </div>
     </div>
@@ -254,7 +254,7 @@
         });
         
         table.render({
-            elem: '#user-table',
+            elem: '#global-table',
             url: MODULE_PATH + '/queryTableInfo',
             page: false,
             cols: cols,
@@ -308,7 +308,7 @@
             window.refresh(field);
         })
  */
-        table.on('tool(user-table)', function (obj) {
+        table.on('tool(global-table)', function (obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
             } else if (obj.event === 'edit') {
@@ -316,7 +316,7 @@
             }
         });
 
-        table.on('toolbar(user-table)', function (obj) {
+        table.on('toolbar(global-table)', function (obj) {
             if (obj.event === 'createAdmin') {
                 window.createAdmin();
             } else if (obj.event === 'refresh') {
@@ -348,20 +348,29 @@
 
         //预览
         window.view = function () {
+        	var autoConfigData = form.val("autoConfigForm");
+        	console.log(autoConfigData);
+        	var urlpar="tableName="+autoConfigData.tableName+"&tableComment="+autoConfigData.tableComment+"&author="
+        	+autoConfigData.author+"&pid="+autoConfigData.pid;
+        	
         	var index = layer.open({
                 type: 2,
                 title: '预览',
                 shade: 0.1,
                 maxmin: true,
                 area: ['800px', '600px'],
-                content: MODULE_PATH + "/viewAuto?tableName="+tableName
+                content: MODULE_PATH + "/viewAuto?"+urlpar
             });
             layer.full(index);
         }
         
       	//zip
         window.zip = function () {
-            document.location.href=MODULE_PATH + "/createAutoZip?tableName="+tableName
+        	var autoConfigData = form.val("autoConfigForm");
+        	var urlpar="tableName="+autoConfigData.tableName+"&tableComment="+autoConfigData.tableComment+"&author="
+        	+autoConfigData.author+"&pid="+autoConfigData.pid;
+        	
+            document.location.href=MODULE_PATH + "/createAutoZip?"+urlpar;
         }
         
       	//生成后台
@@ -386,13 +395,8 @@
                  }
              })
         }
-
-
-       
-
-
         window.refresh = function (param) {
-            table.reload('user-table', {where: param});
+            table.reload('global-table', {where: param});
         }
     })
 </script>

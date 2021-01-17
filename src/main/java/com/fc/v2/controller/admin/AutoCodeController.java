@@ -46,8 +46,8 @@ public class AutoCodeController extends BaseController {
 	private String prefix = "admin/autoCode";
 	@Autowired
 	private GeneratorService generatorService;
-	//@Autowired
-	//private SysUtilService sysUtilService;	
+	// @Autowired
+	// private SysUtilService sysUtilService;
 
 	/**
 	 * 代码自动生成全局配置
@@ -66,36 +66,34 @@ public class AutoCodeController extends BaseController {
 		modelMap.put("parentPath", AutoCodeConfig.getConfig().getProperty("parentPath"));
 		return prefix + "/global";
 	}
-	
-	
+
 	/**
 	 * 树结构查询所有表
+	 * 
 	 * @return
 	 * @author fuce
 	 * @Date 2021年1月15日 下午2:21:19
 	 */
-    @GetMapping("/selectTables")
+	@GetMapping("/selectTables")
 	@ResponseBody
-    public ResuTree selectTables(){
-    	List<TsysTables> list = generatorService.queryList(null);
-    	List<TsysTablesVo> TreeList=new ArrayList<TsysTablesVo>();
-    	for (int i = 0; i < list.size(); i++) {
-    		TsysTablesVo tablesVo=new TsysTablesVo(i+1, -1, list.get(i).getTableName(), 
-    				list.get(i).getEngine(), list.get(i).getTableComment(), 
-    				list.get(i).getTableModel(), list.get(i).getCreateTime(),
-    				list.get(i).getTableName()+" > "+list.get(i).getTableComment()
-    				);
-    		TreeList.add(tablesVo);
+	public ResuTree selectTables() {
+		List<TsysTables> list = generatorService.queryList(null);
+		List<TsysTablesVo> TreeList = new ArrayList<TsysTablesVo>();
+		for (int i = 0; i < list.size(); i++) {
+			TsysTablesVo tablesVo = new TsysTablesVo(i + 1, -1, list.get(i).getTableName(), list.get(i).getEngine(),
+					list.get(i).getTableComment(), list.get(i).getTableModel(), list.get(i).getCreateTime(),
+					list.get(i).getTableName() + " > " + list.get(i).getTableComment());
+			TreeList.add(tablesVo);
 		}
-    	
-    	TsysTablesVo tables= new TsysTablesVo();
-    	tables.setTableModel("all");
-    	tables.setTableAndName("所有表");
-    	tables.setParentId(0);
-    	tables.setId(-1);
-    	TreeList.add(tables);
-        return dataTree(TreeList);
-    }
+
+		TsysTablesVo tables = new TsysTablesVo();
+		tables.setTableModel("all");
+		tables.setTableAndName("所有表");
+		tables.setParentId(0);
+		tables.setId(-1);
+		TreeList.add(tables);
+		return dataTree(TreeList);
+	}
 
 	/**
 	 * 根据表查询表字段详情
@@ -110,9 +108,9 @@ public class AutoCodeController extends BaseController {
 	@ResponseBody
 	public ResultTable queryTableInfo(String tableName) {
 		List<BeanColumn> list = generatorService.queryColumns2(tableName);
-		return pageTable(list,list.size());
+		return pageTable(list, list.size());
 	}
-	
+
 	/**
 	 * 生成文件
 	 * 
@@ -122,45 +120,42 @@ public class AutoCodeController extends BaseController {
 	@PostMapping("/createAuto")
 	@ResponseBody
 	public AjaxResult createAuto(AutoConfigModel autoConfigModel) {
-		//根据表名查询表字段集合
+		// 根据表名查询表字段集合
 		List<BeanColumn> list = generatorService.queryColumns2(autoConfigModel.getTableName());
-		//初始化表信息
-		TableInfo tableInfo=new TableInfo(autoConfigModel.getTableName(), list,autoConfigModel.getTableComment());
-		 
-		AutoCodeUtil.autoCodeOneModel(tableInfo,autoConfigModel);
+		// 初始化表信息
+		TableInfo tableInfo = new TableInfo(autoConfigModel.getTableName(), list, autoConfigModel.getTableComment());
+
+		AutoCodeUtil.autoCodeOneModel(tableInfo, autoConfigModel);
 		return AjaxResult.success();
 	}
-	
-	
+
 	/**
 	 * 生成文件Zip
 	 * 
 	 * @author fuce
-	 * @throws IOException 
+	 * @throws IOException
 	 * @Date 2021年1月15日 下午2:21:55
 	 */
 	@GetMapping("/createAutoZip")
 	@ResponseBody
-	public void createAutoZip(AutoConfigModel autoConfigModel,HttpServletResponse response) throws IOException {
+	public void createAutoZip(AutoConfigModel autoConfigModel, HttpServletResponse response) throws IOException {
 		byte[] b;
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-        //根据表名查询表字段集合
+		ZipOutputStream zip = new ZipOutputStream(outputStream);
+		// 根据表名查询表字段集合
 		List<BeanColumn> list = generatorService.queryColumns2(autoConfigModel.getTableName());
-		//初始化表信息
-		TableInfo tableInfo=new TableInfo(autoConfigModel.getTableName(), list,autoConfigModel.getTableComment()); 
-		//自动生成
-		AutoCodeUtil.autoCodeOneModel(tableInfo,autoConfigModel,zip);
+		// 初始化表信息
+		TableInfo tableInfo = new TableInfo(autoConfigModel.getTableName(), list, autoConfigModel.getTableComment());
+		// 自动生成
+		AutoCodeUtil.autoCodeOneModel(tableInfo, autoConfigModel, zip);
 		IOUtils.closeQuietly(zip);
-		b=outputStream.toByteArray();
-		response.reset();  
-        response.setHeader("Content-Disposition", "attachment; filename=\"v2.zip\"");  
-        response.addHeader("Content-Length", "" + b.length);  
-        response.setContentType("application/octet-stream; charset=UTF-8");
-        IOUtils.write(b, response.getOutputStream());
+		b = outputStream.toByteArray();
+		response.reset();
+		response.setHeader("Content-Disposition", "attachment; filename=\"v2.zip\"");
+		response.addHeader("Content-Length", "" + b.length);
+		response.setContentType("application/octet-stream; charset=UTF-8");
+		IOUtils.write(b, response.getOutputStream());
 	}
-	
-	
 
 	/**
 	 * 预览生成文件
@@ -169,20 +164,13 @@ public class AutoCodeController extends BaseController {
 	 * @Date 2021年1月15日 下午2:21:55
 	 */
 	@GetMapping("/viewAuto")
-	public String viewAuto(String tableName,ModelMap model) {
-		List<TsysTables> tsysTables=generatorService.queryList(tableName);
-		String tableComment = null;
-		if(tsysTables!=null&&tsysTables.size()>0) {
-			tableComment=tsysTables.get(0).getTableComment();
-		}
-		List<BeanColumn> list = generatorService.queryColumns2(tableName);
-		TableInfo tableInfo=new TableInfo(tableName, list,tableComment);
-		 Map<String,String> map= AutoCodeUtil.viewAuto(tableInfo);
-		 model.put("viewmap", map);
-		 return prefix + "/view";
+	public String viewAuto(AutoConfigModel autoConfigModel, ModelMap model) {
+		List<BeanColumn> list = generatorService.queryColumns2(autoConfigModel.getTableName());
+		TableInfo tableInfo = new TableInfo(autoConfigModel.getTableName(), list, autoConfigModel.getTableComment());
+		Map<String, String> map = AutoCodeUtil.viewAuto(tableInfo,autoConfigModel);
+		model.put("viewmap", map);
+		return prefix + "/view";
 	}
-	
-	
 
 //	/**
 //	 * 保存配置文件

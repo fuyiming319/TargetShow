@@ -71,7 +71,6 @@ public class AutoCodeUtil {
         Properties prop = new Properties();
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
         Velocity.init(prop);
-		
 		Map<String, Object> map = new HashMap<>();
         //数据库表数据
 		map.put("tableInfo",tableInfo);
@@ -117,9 +116,9 @@ public class AutoCodeUtil {
 					try (FileOutputStream outStream = new FileOutputStream(file);
 						 OutputStreamWriter writer = new OutputStreamWriter(outStream, "UTF-8");
 						 BufferedWriter sw = new BufferedWriter(writer)) {
-						tpl.merge(context, sw);
-						sw.flush();
-						System.out.println("成功生成Java文件:" + filepath);
+						 tpl.merge(context, sw);
+						 sw.flush();
+						 System.out.println("成功生成Java文件:" + filepath);
 					}
         	} catch (IOException e) {
                 try {
@@ -132,24 +131,63 @@ public class AutoCodeUtil {
 	}
 	
 	
+
+    
+
+	/**
+	 * 预览方法
+	 * @param tableInfo 数据库表
+	 * @return
+	 * @author fuce
+	 * @Date 2021年1月18日 上午2:10:55
+	 */
+	public static Map<String,String> viewAuto(TableInfo tableInfo,AutoConfigModel autoConfigModel){
+		Map<String, String> velocityMap=new HashMap<String, String>();
+		
+		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
+		//设置velocity资源加载器
+        Properties prop = new Properties();
+        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        Velocity.init(prop);
+		Map<String, Object> map = new HashMap<>();
+		//数据库表数据
+		map.put("tableInfo",tableInfo);
+        //字段集合
+        map.put("beanColumns",tableInfo.getBeanColumns());
+        //配置文件
+        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
+        //class类路径
+        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
+        //作者
+        map.put("author", autoConfigModel.getAuthor());
+        //时间
+        map.put("datetime",new DateTime());
+        //sql需要的权限父级pid
+        map.put("pid",autoConfigModel.getPid());
+        
+        VelocityContext velocityContext = new VelocityContext(map);
+        //获取模板列表
+        List<String> templates = getTemplates();
+        for (String template : templates) {
+			Template tpl = Velocity.getTemplate(template, "UTF-8" );
+			StringWriter sw = new StringWriter(); 
+			tpl.merge(velocityContext, sw);
+			System.out.println("输出模板");
+			System.out.println(sw);
+			System.out.println("输出模板 end");
+			velocityMap.put(template.substring(template.lastIndexOf("/")+1, template.lastIndexOf(".vm")), sw.toString());
+        }
+        return velocityMap;
+	}
+	
+	
+	
 	
 	
 
+
 	/**
-	 * 创建单表
-	 * @param tableName 表名
-	 * @param conditionQueryField  条件查询字段
-	 * @param pid 父id
-	 * @param sqlcheck 是否录入数据
-	 * @param vhtml 生成html
-	 * @param vController 生成controller
-	 * @param vservice 生成service
-	 * @param vMapperORdao 生成mapper or dao
-	 * @author fuce
-	 * @Date 2019年8月24日 下午11:44:54
-	 */
-	/**
-	 * 自动生成
+	 * 自动生成压缩文件方法
 	 * @param tableInfo
 	 * @param zip
 	 * @author fuce
@@ -257,76 +295,4 @@ public class AutoCodeUtil {
         }
         return "";
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-	/**
-	 * 创建单表
-	 * @param tableName 表名
-	 * @param conditionQueryField  条件查询字段
-	 * @param pid 父id
-	 * @param sqlcheck 是否录入数据
-	 * @param vhtml 生成html
-	 * @param vController 生成controller
-	 * @param vservice 生成service
-	 * @param vMapperORdao 生成mapper or dao
-	 * @author fuce
-	 * @Date 2019年8月24日 下午11:44:54
-	 */
-	public static Map<String,String> viewAuto(TableInfo tableInfo){
-		Map<String, String> velocityMap=new HashMap<String, String>();
-		
-		AutoCodeConfig autoCodeConfig=new AutoCodeConfig();
-		//设置velocity资源加载器
-        Properties prop = new Properties();
-        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        Velocity.init(prop);
-		Map<String, Object> map = new HashMap<>();
-        //数据库表数据                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-		map.put("tableInfo",tableInfo);
-        //字段集合
-        map.put("beanColumns",tableInfo.getBeanColumns());
-        //配置文件
-        map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
-        //class类路径
-        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
-        //作者
-        map.put("author", autoCodeConfig.getConfigkey("author"));
-        //时间
-        map.put("datetime",new DateTime());
-        VelocityContext velocityContext = new VelocityContext(map);
-        //获取模板列表
-        List<String> templates = getTemplates();
-        for (String template : templates) {
-			Template tpl = Velocity.getTemplate(template, "UTF-8" );
-			StringWriter sw = new StringWriter(); 
-			tpl.merge(velocityContext, sw);
-			System.out.println("输出模板");
-			System.out.println(sw);
-			System.out.println("输出模板 end");
-			velocityMap.put(template.substring(template.lastIndexOf("/")+1, template.lastIndexOf(".vm")), sw.toString());
-        }
-        return velocityMap;
-	}
-	
 }
