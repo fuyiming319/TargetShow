@@ -6,6 +6,7 @@ import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.TsysPermission;
 import com.fc.v2.model.custom.Tablepar;
+import com.fc.v2.shiro.util.ShiroUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -238,7 +239,10 @@ public class PermissionController  extends BaseController{
     public AjaxResult saveRolePower(String roleId,String powerIds)
     {
     	int i=sysRoleService.updateRoleAndPrem(roleId,powerIds);
-
+    	if(i>0) {
+    		//大于0刷新权限
+    		ShiroUtils.clearCachedAuthorizationInfo();
+    	}
         return toAjax(i);
     }
 

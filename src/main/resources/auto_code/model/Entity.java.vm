@@ -70,7 +70,7 @@ public class ${tableInfo.javaTableName} implements Serializable {
 	}
 
 #if(($isdate)==true)
-	public String convert(Date date) {
+	public String dateToStringConvert(Date date) {
 		if(date!=null) {
 			return DateUtil.format(date, "yyyy-MM-dd HH:mm:ss");
 		}
