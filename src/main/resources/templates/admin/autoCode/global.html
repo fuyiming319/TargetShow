@@ -348,6 +348,10 @@
 
         //预览
         window.view = function () {
+        	if(tableName==null||tableName==""){
+        		layer.msg("未选表！", {icon: 2, time: 1000});
+        		return
+        	}
         	var autoConfigData = form.val("autoConfigForm");
         	console.log(autoConfigData);
         	var urlpar="tableName="+autoConfigData.tableName+"&tableComment="+autoConfigData.tableComment+"&author="
@@ -366,6 +370,10 @@
         
       	//zip
         window.zip = function () {
+        	if(tableName==null||tableName==""){
+        		layer.msg("未选表！", {icon: 2, time: 1000});
+        		return
+        	}
         	var autoConfigData = form.val("autoConfigForm");
         	var urlpar="tableName="+autoConfigData.tableName+"&tableComment="+autoConfigData.tableComment+"&author="
         	+autoConfigData.author+"&pid="+autoConfigData.pid;
@@ -375,6 +383,10 @@
         
       	//生成后台
         window.createAdmin = function () {
+        	if(tableName==null||tableName==""){
+        		layer.msg("未选表！", {icon: 2, time: 1000});
+        		return
+        	}
         	var autoConfigData = form.val("autoConfigForm");
         	let loading = layer.load();
         	 $.ajax({
@@ -395,6 +407,12 @@
                  }
              })
         }
+      	
+      	
+        window.createHTML=function(){
+        	layer.msg("开发中", {icon: 2, time: 1000});
+        }
+        
         window.refresh = function (param) {
             table.reload('global-table', {where: param});
         }
