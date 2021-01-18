@@ -270,7 +270,7 @@ layui.define(['table', 'jquery', 'element', 'form', 'tab', 'menu', 'frame'],
 							icon: 1,
 							time: 1200
 						}, function() {
-							location.href = "/";
+							location.href = rootPath+"/";
 						});
 					}
 				}
