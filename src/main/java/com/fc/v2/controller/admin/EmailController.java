@@ -1,6 +1,7 @@
 package com.fc.v2.controller.admin;
 
 import com.fc.v2.common.base.BaseController;
+import com.fc.v2.common.conf.oss.OssTemplate;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.TSysEmail;
@@ -33,6 +34,9 @@ public class EmailController extends BaseController{
 	
 	@Autowired
 	private TSysEmailService tSysEmailService;
+	
+	@Autowired
+	private  OssTemplate template;
 	
 	/**
 	 * 分页展示页面
@@ -69,6 +73,7 @@ public class EmailController extends BaseController{
     @GetMapping("/add")
     public String add(ModelMap modelMap)
     {
+		modelMap.put("BucketName",template.getOssProperties().getBucketName());
         return prefix + "/add";
     }
 	
@@ -143,6 +148,7 @@ public class EmailController extends BaseController{
 	@GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
+		mmap.put("BucketName",template.getOssProperties().getBucketName());
         mmap.put("TSysEmail", tSysEmailService.selectByPrimaryKey(id));
         return prefix + "/view";
     }

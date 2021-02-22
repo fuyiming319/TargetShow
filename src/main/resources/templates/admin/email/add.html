@@ -50,9 +50,17 @@
         let form = layui.form;
         let $ = layui.jquery;
         let MODULE_PATH = rootPath+"/EmailController";
-
-         let layedite=layui.layedit;
-         let layeditIndex=layedite.build('content'); //建立编辑器
+	
+        let FILE_PATH = rootPath+"/oss";
+        let BucketName='[[${BucketName}]]';
+        let layedite=layui.layedit;
+        layedite.set({
+	       	  uploadImage: {
+	       	    url: FILE_PATH+'/createObjectLayedit/'+BucketName //接口url
+	       	    ,type: 'post' //默认post
+	       	  }
+		});
+        let layeditIndex=layedite.build('content'); //建立编辑器
 
         //保存
         form.on('submit(email-save)', function (data) {

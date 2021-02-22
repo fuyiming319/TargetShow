@@ -224,9 +224,40 @@ public class OssEndpoint {
 				}
 			}
 		}
-
-
 		return AjaxResult.error("修改失败");
+	}
+	
+	/**
+	 * 富文本上传文件
+	 * @param object 文件流对象
+	 * @param bucketName 桶名
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/createObjectLayedit/{bucketName}")
+	public Object createObjectLayedit(@RequestBody MultipartFile file, @PathVariable String bucketName) throws Exception {
+		Map<String,Object> retmap=new HashMap<String, Object>();
+		Map<String,Object> retdatamap=new HashMap<String, Object>();
+		String fileName = file.getOriginalFilename();
+		String suffixName = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+		String uuid=SnowflakeIdWorker.getUUID();
+		String fileSuffixName=uuid+suffixName;
+		PutObjectResult putObjectResult=template.putObject(bucketName, fileSuffixName, file.getInputStream(), file.getSize(), file.getContentType());
+		if(putObjectResult!=null){
+			SysFile sysFile=new SysFile(uuid,  fileSuffixName,  bucketName, file.getSize(), file.getContentType(),ShiroUtils.getUserId(), ShiroUtils.getLoginName(), new Date(),null, null, null);
+			int i=sysFileService.insertSelective(sysFile);
+			if(i>0){
+				retmap.put("code",0);
+				retmap.put("msg","上传成功!");
+				String bucketURL=template.getOssProperties().getEndpoint()+"/"+template.getOssProperties().getBucketName()+"/";
+				retdatamap.put("src",bucketURL+template.getObjectInfo(bucketName,  fileSuffixName).getKey());
+				retmap.put("data",retdatamap);
+				return retmap;
+			}
+		}
+		retmap.put("code",500);
+		retmap.put("msg","上传失败!");
+		return retmap;
 	}
 
 }
