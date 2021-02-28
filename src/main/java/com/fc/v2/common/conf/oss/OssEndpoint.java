@@ -1,19 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: lengleng (wangiegie@gmail.com)
- */
 
 package com.fc.v2.common.conf.oss;
 
@@ -30,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +21,9 @@ import java.util.Map;
 
 /**
  * aws 对外提供服务端点
- *
- * @author lengleng
- * @author 858695266
- * <p>
- * oss.info
+ * @ClassName: OssEndpoint
+ * @author fuce
+ * @date 2021-02-28 20:01
  */
 @RestController
 @RequestMapping("/oss")

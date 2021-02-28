@@ -1,20 +1,3 @@
-/*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: lengleng (wangiegie@gmail.com)
- */
-
 package com.fc.v2.common.conf.oss;
 
 import com.amazonaws.ClientConfiguration;
@@ -28,19 +11,17 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
-
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
 /**
  * aws-s3 通用存储操作 支持所有兼容s3协议的云存储: {阿里云OSS，腾讯云COS，七牛云，京东云，minio 等}
- *
- * @author lengleng
- * @author 858695266
- * @date 2020/5/23 6:36 上午
- * @since 1.0
+ * @ClassName: OssTemplate
+ * @author fuce
+ * @date 2021-02-28 20:02
  */
 
 public class OssTemplate implements InitializingBean {
@@ -153,7 +134,14 @@ public class OssTemplate implements InitializingBean {
 	 */
 	
 	public S3Object getObject(String bucketName, String objectName) {
-		return amazonS3.getObject(bucketName, objectName);
+		
+		try(S3Object s3Object=amazonS3.getObject(bucketName, objectName)) {
+			return s3Object;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
 	/**
@@ -200,7 +188,7 @@ public class OssTemplate implements InitializingBean {
 	 * API Documentation</a>
 	 */
 	public S3Object getObjectInfo(String bucketName, String objectName) throws Exception {
-		return amazonS3.getObject(bucketName, objectName);
+		return getObject(bucketName, objectName);
 	}
 
 	/**
@@ -220,7 +208,8 @@ public class OssTemplate implements InitializingBean {
 	public void afterPropertiesSet() {
 		ClientConfiguration clientConfiguration = new ClientConfiguration();
 		clientConfiguration.setMaxConnections(ossProperties.getMaxConnections());
-
+		//连接超时时间
+		clientConfiguration.setConnectionTimeout(5000);
 		AwsClientBuilder.EndpointConfiguration endpointConfiguration = new AwsClientBuilder.EndpointConfiguration(
 				ossProperties.getEndpoint(), ossProperties.getRegion());
 		AWSCredentials awsCredentials = new BasicAWSCredentials(ossProperties.getAccessKey(),

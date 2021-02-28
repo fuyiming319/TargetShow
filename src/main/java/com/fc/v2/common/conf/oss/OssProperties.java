@@ -4,6 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * aws 配置信息
+ * @ClassName: OssProperties
+ * @author fuce
+ * @date 2021-02-28 20:02
  */
 @ConfigurationProperties(prefix = "oss")
 public class OssProperties {
