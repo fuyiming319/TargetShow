@@ -12,7 +12,6 @@ import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
