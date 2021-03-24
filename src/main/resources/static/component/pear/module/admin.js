@@ -45,7 +45,7 @@ layui.define(['table', 'jquery', 'element', 'form', 'tab', 'menu', 'frame'],
 					change: function() {
 						compatible();
 					},
-					done() {
+					done: function() {
 						sideMenu.selectItem(param.menu.select);
 					}
 				})
@@ -450,32 +450,32 @@ layui.define(['table', 'jquery', 'element', 'form', 'tab', 'menu', 'frame'],
 					}
 					break;
 			}
-			
+
 	        document.addEventListener('fullscreenerror', function(){
 	        	console.log("fullscreenerror");
-	        	
+
 	        });
-	        
+
 	        document.addEventListener('webkitfullscreenerror', function(){
 	        	console.log("webkitfullscreenerror");
-	        	
+
 	        });
-	 
+
 	        document.addEventListener('mozfullscreenerror', function(){
 	        	console.log("mozfullscreenerror");
-	        	
+
 	        });
-	 
+
 	        document.addEventListener('MSFullscreenError', function(){
 	        	console.log("MSFullscreenError");
-	        	
+
 	        });
-			
+
 			return new Promise(function(res, rej) {
 				res("返回值");
 			});
 		}
-		
+
 		//全屏判断
 		function isFullscreen(){
             return document.fullscreenElement    ||
@@ -489,7 +489,7 @@ layui.define(['table', 'jquery', 'element', 'form', 'tab', 'menu', 'frame'],
 	        	$(".fullScreen").eq(0).removeClass("layui-icon-screen-restore");
 	        }
 	    }
-		
+
 
 		exports('admin', pearAdmin);
 	})
