@@ -3,11 +3,16 @@ package com.fc.v2.controller.admin;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysArea;
+import com.fc.v2.model.auto.SysCity;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysAreaService;
+import com.fc.v2.service.SysCityService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +33,9 @@ public class SysAreaController extends BaseController{
 	private String prefix = "admin/province/sysArea";
 	@Autowired
 	private SysAreaService sysAreaService;
+	
+	@Autowired
+	private SysCityService sysCityService;
 	
 	/**
 	 * 地区页面展示
@@ -69,6 +77,8 @@ public class SysAreaController extends BaseController{
     @GetMapping("/add")
     public String add(ModelMap modelMap)
     {
+		List<SysCity> sysCities=sysCityService.selectByExample(null);
+		modelMap.put("sysCities", sysCities);
         return prefix + "/add";
     }
 	
@@ -141,7 +151,8 @@ public class SysAreaController extends BaseController{
     public String edit(@PathVariable("id") Integer id, ModelMap mmap)
     {
         mmap.put("SysArea", sysAreaService.selectByPrimaryKey(id));
-
+        List<SysCity> sysCities=sysCityService.selectByExample(null);
+        mmap.put("sysCities", sysCities);
         return prefix + "/edit";
     }
 	

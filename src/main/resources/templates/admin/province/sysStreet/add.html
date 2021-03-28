@@ -17,7 +17,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">父级区代码</label>
                     <div class="layui-input-block">
-                        <input type="text" name="areaCode" autocomplete="off" placeholder="父级区代码" class="layui-input">
+                        <select name="areaCode">
+							<option th:each="list : ${sysAreas}" th:text="${list.areaName}" th:value="${list.areaCode}"></option>
+					    </select>
                     </div>
                 </div>
                 <div class="layui-form-item">

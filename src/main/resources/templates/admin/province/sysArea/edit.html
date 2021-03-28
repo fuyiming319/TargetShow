@@ -25,7 +25,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">父级市代码</label>
                     <div class="layui-input-block">
-                        <input th:value="*{cityCode}" type="text" name="cityCode" lay-verify="provinceCode" autocomplete="off" placeholder="父级市代码" class="layui-input">
+                        <select name="cityCode" th:field="*{cityCode}">
+							<option th:each="list : ${sysCities}" th:text="${list.cityName}" th:value="${list.cityCode}"></option>
+						</select>
                     </div>
                 </div>
                 <div class="layui-form-item">

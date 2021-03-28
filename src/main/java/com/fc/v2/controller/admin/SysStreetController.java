@@ -1,5 +1,7 @@
 package com.fc.v2.controller.admin;
 
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import com.github.pagehelper.PageInfo;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
+import com.fc.v2.model.auto.SysArea;
 import com.fc.v2.model.auto.SysStreet;
 import com.fc.v2.model.custom.Tablepar;
+import com.fc.v2.service.SysAreaService;
 import com.fc.v2.service.SysStreetService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +32,8 @@ public class SysStreetController extends BaseController{
 	private String prefix = "admin/province/sysStreet";
 	@Autowired
 	private SysStreetService sysStreetService;
+	@Autowired
+	private SysAreaService sysAreaService;
 	
 	/**
 	 * 展示跳转
@@ -67,6 +73,8 @@ public class SysStreetController extends BaseController{
     @GetMapping("/add")
     public String add(ModelMap modelMap)
     {
+		List<SysArea> sysAreas=sysAreaService.selectByExample(null);
+		modelMap.put("sysAreas",sysAreas);
         return prefix + "/add";
     }
 	
@@ -138,8 +146,9 @@ public class SysStreetController extends BaseController{
 	@GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap)
     {
+		List<SysArea> sysAreas=sysAreaService.selectByExample(null);
         mmap.put("SysStreet", sysStreetService.selectByPrimaryKey(id));
-
+        mmap.put("sysAreas",sysAreas);
         return prefix + "/edit";
     }
 	/**

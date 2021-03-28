@@ -1,5 +1,7 @@
 package com.fc.v2.controller.admin;
 
+import java.util.List;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +11,11 @@ import com.github.pagehelper.PageInfo;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.model.auto.SysCity;
+import com.fc.v2.model.auto.SysProvince;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysCityService;
+import com.fc.v2.service.SysProvinceService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -28,6 +33,9 @@ public class SysCityController extends BaseController{
 	private String prefix = "admin/province/sysCity";
 	@Autowired
 	private SysCityService sysCityService;
+	
+	@Autowired
+	private SysProvinceService sysProvinceService;
 	
 	/**
 	 * 城市设置展示跳转
@@ -68,6 +76,8 @@ public class SysCityController extends BaseController{
     @GetMapping("/add")
     public String add(ModelMap modelMap)
     {
+		List<SysProvince> sysProvinces=sysProvinceService.selectByExample(null);
+		modelMap.put("sysProvinces", sysProvinces);
         return prefix + "/add";
     }
 	/**
@@ -136,8 +146,9 @@ public class SysCityController extends BaseController{
 	@GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, ModelMap mmap)
     {
+		List<SysProvince> sysProvinces=sysProvinceService.selectByExample(null);
+		mmap.put("sysProvinces", sysProvinces);
         mmap.put("SysCity", sysCityService.selectByPrimaryKey(id));
-
         return prefix + "/edit";
     }
 	

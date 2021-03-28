@@ -29,7 +29,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">省代码</label>
                     <div class="layui-input-block">
-                        <input type="text" name="provinceCode" autocomplete="off"  class="layui-input" placeholder="省代码">
+                        <select name="provinceCode">
+							<option th:each="list : ${sysProvinces}" th:text="${list.provinceName}" th:value="${list.provinceCode}"></option>
+						</select>
                     </div>
                 </div>
                 <div class="layui-form-item">
