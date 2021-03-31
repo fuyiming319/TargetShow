@@ -5,7 +5,7 @@
     <link rel="stylesheet" th:href="@{/static/admin/css/other/login.css}" />
 </head>
 <!-- 代 码 结 构 -->
-<body th:background="@{/static/admin/images/background2.svg}">
+<body th:background="@{/static/admin/images/login.svg}">
 <form class="layui-form" action="javascript:void(0);">
     <div class="layui-form-item">
         <img class="logo" th:src="@{/static/admin/images/logo.png}" />
@@ -25,7 +25,7 @@
         <img th:src="@{/captcha/captchaImage?type=char}" class="codeImage" id="captchaImage"/>
     </div>
     <div class="layui-form-item">
-        <input type="checkbox" name="rememberMe" title="记住密码" lay-skin="primary">
+        <input type="checkbox" name="remember-me" title="记住密码" lay-skin="primary">
     </div>
     <div class="layui-form-item">
         <button class="pear-btn pear-btn-success login" lay-submit lay-filter="login">
