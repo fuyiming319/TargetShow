@@ -263,7 +263,25 @@ layui.define(['message','jquery', 'yaml','form', 'tab', 'menu', 'frame', 'theme'
 		body.on("click", ".logout", function() {
 			// 回调
 			let result = logout();
-
+			
+			$.ajax({
+				url: rootPath+'/admin/Loginout',
+				dataType: 'json',
+				type: 'get',
+				success: function(result) {
+					if (result.code==200) {
+						layer.msg("注销成功", {
+							icon: 1,
+							time: 1200
+						}, function() {
+							location.href = rootPath+"/";
+						});
+					}
+				}
+			})
+			
+			
+			
 			if (result) {
 				// 清空缓存
 				bodyTab.clear();
