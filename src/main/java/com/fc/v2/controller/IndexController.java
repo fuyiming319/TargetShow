@@ -28,6 +28,9 @@ public class IndexController extends BaseController{
 	@ApiOperation(value="前台",notes="前台")
 	@GetMapping("/")
 	public String index(ModelMap map) {
+		
+		//直接访问后台用
+		//return redirect:/admin/login
     	return "index";
 	}
 	/**
