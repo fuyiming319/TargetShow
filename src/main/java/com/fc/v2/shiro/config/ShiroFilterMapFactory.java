@@ -62,7 +62,7 @@ public class ShiroFilterMapFactory {
 		filterChainDefinitionMap.put("/oss/**", "anon");
 
 		// 对所有页面进行认证
-		filterChainDefinitionMap.put("/**", "authc");
+		filterChainDefinitionMap.put("/**", "user");
 		return filterChainDefinitionMap;
 	}
 }
