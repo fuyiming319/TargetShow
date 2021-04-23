@@ -100,15 +100,28 @@ layui.define(['message','jquery', 'yaml','form', 'tab', 'menu', 'frame', 'theme'
 					refreshA.addClass("layui-anim-rotate");
 					refreshA.addClass("layui-anim-loop");
 					refreshA.addClass("layui-icon-loading");
-					if (param.tab.muiltTab) bodyTab.refresh(400);
-					else bodyFrame.refresh(400);
-					setTimeout(function() {
-						refreshA.addClass("layui-icon-refresh-1");
-						refreshA.removeClass("layui-anim");
-						refreshA.removeClass("layui-anim-rotate");
-						refreshA.removeClass("layui-anim-loop");
-						refreshA.removeClass("layui-icon-loading");
-					}, 600)
+					if (param.tab.muiltTab){
+						setTimeout(function() {
+							refreshA.addClass("layui-icon-refresh-1");
+							refreshA.removeClass("layui-anim");
+							refreshA.removeClass("layui-anim-rotate");
+							refreshA.removeClass("layui-anim-loop");
+							refreshA.removeClass("layui-icon-loading");
+						}, 600)
+						bodyTab.refresh(400);
+					}
+					else
+					{
+					   setTimeout(function() {
+							refreshA.addClass("layui-icon-refresh-1");
+							refreshA.removeClass("layui-anim");
+							refreshA.removeClass("layui-anim-rotate");
+							refreshA.removeClass("layui-anim-loop");
+							refreshA.removeClass("layui-icon-loading");
+						}, 600)
+						bodyFrame.refresh(400);
+					}
+					
 				})
 				if (param.tab.muiltTab) {
 					bodyTab = pearTab.render({
