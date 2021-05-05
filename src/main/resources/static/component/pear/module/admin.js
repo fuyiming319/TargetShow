@@ -80,7 +80,7 @@ layui.define(['message','jquery', 'yaml','form', 'tab', 'menu', 'frame', 'theme'
 					control: param.menu.control ? 'control' : false, // control
 					defaultMenu: 0,
 					accordion: param.menu.accordion,
-					url: param.menu.data,
+					url: rootPath+param.menu.data,
 					data: param.menu.data, //async为false时，传入菜单数组
 					parseData: false,
 					change: function() {
