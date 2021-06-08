@@ -49,8 +49,8 @@
                 type:"post",
                 dataType:'json',
                 success:function(result){
-                    layer.close(loader);
                     if(result.code==200){
+                    	$(".login").attr("disabled","disabled")
                         layer.msg(result.msg,{icon:1,time:1000},function(){
                             location.href = rootPath+"/admin/index";
                         })
@@ -60,6 +60,7 @@
                         });
                     }
                     $(".login").html("登 入")
+                    layer.close(loader);
                 }
             });
             return false;
