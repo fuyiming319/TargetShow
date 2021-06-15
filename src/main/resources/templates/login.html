@@ -39,8 +39,8 @@
         let form = layui.form;
         let $ = layui.jquery;
         let layer = layui.layer;
-
         form.on('submit(login)', function(data){
+        	$(".login").attr("disabled","disabled")
             let loader = layer.load();
             $(".login").html("<i class='layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-icon-loading' />");
             $.ajax({
@@ -50,7 +50,7 @@
                 dataType:'json',
                 success:function(result){
                     if(result.code==200){
-                    	$(".login").attr("disabled","disabled")
+                    	
                         layer.msg(result.msg,{icon:1,time:1000},function(){
                             location.href = rootPath+"/admin/index";
                         })
@@ -58,6 +58,7 @@
                         layer.msg(result.msg,{icon:2,time:1000},function(){
                             document.getElementById("captchaImage").src=rootPath+"/captcha/captchaImage?type=char&s="+Math.random();
                         });
+                        $(".login").removeAttr("disabled");
                     }
                     $(".login").html("登 入")
                     layer.close(loader);
