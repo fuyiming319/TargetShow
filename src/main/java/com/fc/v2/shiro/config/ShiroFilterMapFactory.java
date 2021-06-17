@@ -38,6 +38,8 @@ public class ShiroFilterMapFactory {
 	public static Map<String, String> shiroFilterMap() {
 //		设置路径映射，注意这里要用LinkedHashMap 保证有序
 		LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+		//
+		filterChainDefinitionMap.put("/doc.html","anon");
 		// 对所有用户认证
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/admin/login", "anon");
@@ -64,6 +66,10 @@ public class ShiroFilterMapFactory {
 
 		// 对所有页面进行认证
 		filterChainDefinitionMap.put("/**", "user");
+
+
+
+
 		return filterChainDefinitionMap;
 	}
 }

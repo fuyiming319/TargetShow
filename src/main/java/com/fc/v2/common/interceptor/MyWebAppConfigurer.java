@@ -25,8 +25,7 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 	/** 解决跨域问题 **/
 	@Override
 	public void addCorsMappings(CorsRegistry registry){
-		/*
-			registry.addMapping("/**")
+			/*registry.addMapping("/**")
 			// 设置允许跨域请求的域名
 			.allowedOrigins("*")
 			// 是否允许证书
@@ -37,8 +36,12 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 			.allowedHeaders("*")
 			// 跨域允许时间
 			.maxAge(3600);
-			super.addCorsMappings(registry);
-		*/
+			super.addCorsMappings(registry);*/
+		/*MyWebAppConfigurer.super.addCorsMappings(registry);
+		registry.addMapping("/**")
+				.allowedHeaders("*")
+				.allowedMethods("POST", "GET", "PUT", "DELETE")
+				.allowedOrigins("*");*/
 	}
 	
 	/** 添加拦截器 **/
@@ -78,8 +81,8 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 //                "classpath:/META-INF/resources/");
 //        registry.addResourceHandler("/webjars/**").addResourceLocations(
 //                "classpath:/META-INF/resources/webjars/");
-//        
-        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+//
+        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");//knife4
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
         super.addResourceHandlers(registry);
